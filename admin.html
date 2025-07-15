@@ -46,6 +46,7 @@
                 <a href="services.html" class="hover:text-gray-300 transition-colors">Services</a>
                 <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
                 <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
             </div>
             <button class="md:hidden text-2xl" id="menu-toggle">
                 <i class="fas fa-bars"></i>
@@ -60,6 +61,7 @@
                 <a href="services.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Services</a>
                 <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
                 <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
             </div>
         </div>
     </nav>
@@ -114,19 +116,24 @@
 
         <script>
             // Admin Panel Access Control
-            const adminPass = 'QGRtMW4kM2N1cjNQADU1'; // Base64 encoded password
+            const adminPass = '@dm1n$3cur3P@55'; // Plain text password
             const adminLink = document.querySelector('a[href="admin.html"]');
-            if (adminLink) {
-                adminLink.addEventListener('click', (e) => {
-                    const enteredPass = prompt('Enter admin password:');
-                    const passHash = btoa(enteredPass);
-                    if (passHash !== adminPass) {
-                        e.preventDefault();
-                        alert('Access denied: Incorrect password');
-                        window.location.href = 'index.html';
-                        return false;
-                    }
-                });
+
+            // Check if the user is authenticated
+            function checkAdminAccess() {
+                const enteredPass = prompt('Enter admin password:');
+                if (enteredPass === adminPass) {
+                    localStorage.setItem('adminAuthenticated', 'true');
+                    return true;
+                } 
+                alert('Access denied: Incorrect password');
+                window.location.href = 'index.html';
+                return false;
+            }
+
+            // Call the function and prevent access if check fails
+            if (!checkAdminAccess()) {
+                document.querySelector('a[href="admin.html"]').style.display = 'none';
             }
 
             // Mobile menu toggle
