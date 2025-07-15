@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteLogos | Premium Logo Design Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #000000;
+            --secondary: #222222;
+            --accent: #ffffff;
+            --highlight: #9d9d9d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary);
+            color: var(--accent);
+            overflow-x: hidden;
+        }
+        
+        /* Hero Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .logo-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Gallery Hover Effect */
+        .logo-item {
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+        
+        .logo-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        
+        /* Navbar Animation */
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .navbar {
+            animation: slideDown 0.5s ease-out;
+        }
+        
+        /* Button Animation */
+        .cta-button {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+        
+        .cta-button:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Loading Animation */
+        .loading-bar {
+            height: 4px;
+            width: 0;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            animation: loading 2s infinite;
+        }
+        
+        @keyframes loading {
+            0% { width: 0; margin-left: 0; }
+            50% { width: 100%; margin-left: 0; }
+            100% { width: 0; margin-left: 100%; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Loading Animation -->
+    <div class="loading-bar fixed top-0 left-0 z-50"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">
+                <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="hover:text-gray-300 transition-colors">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+            </div>
+            
+            <button class="md:hidden text-2xl" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-black bg-opacity-90 absolute w-full left-0 px-6 pb-4" id="mobile-menu">
+            <div class="flex flex-col space-y-4 mt-4">
+                <a href="#" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Contact</a>
+                
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl opacity-70 animate-pulse"></div>
+            <div class="absolute top-2/3 right-1/3 w-80 h-80 bg-blue-500 rounded-full filter blur-3xl opacity-70 animate-pulse delay-300"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        <span class="text-white">Premium</span> 
+                        <span class="text-gray-300">Logo</span> 
+                        <span class="text-white">Designs</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg mb-8 max-w-lg">
+                        We craft distinctive brand identities that make lasting impressions. 
+                        Explore our premium collection of logos for businesses, personal brands, and shops.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#gallery" class="cta-button bg-white text-black px-8 py-3 rounded font-medium transition-colors hover:bg-gray-200">
+                            View Gallery
+                        </a>
+                        <a href="contact.html" class="cta-button border-2 border-white text-white px-8 py-3 rounded font-medium transition-colors hover:bg-white hover:text-black">
+                            Get a Quote
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <img src="home.avif" alt="Featured logo animation showing a premium, sleek corporate identity design with golden accents" 
+                             class="logo-float w-full max-w-md rounded-lg shadow-2xl border border-gray-700">
+                        <div class="absolute -bottom-6 -right-6 bg-gray-800 p-6 rounded-lg shadow-lg w-48">
+                            <h3 class="text-xl font-bold mb-2">Featured Logo</h3>
+                            <p class="text-gray-300 text-sm">Corporate Identity</p>
+                            <p class="text-gray-300 text-sm mt-2">$499</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Preview Section -->
+    <section id="gallery" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Logo Collections</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Explore our diverse range of logo designs categorized for different business needs and personal branding.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-2 logo-item">
+                    <img src="https://placehold.co/600x400" alt="Collection of modern corporate logos with clean typography and minimalist designs" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Corporate Logos</h3>
+                        <p class="text-gray-400 mb-4">Professional identities for businesses and enterprises</p>
+                        <a href="gallery.html?category=corporate" class="text-white font-medium hover:underline">View Collection →</a>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-2 logo-item">
+                    <img src="https://placehold.co/600x400" alt="Playful personal brand logos with creative typography and colorful elements" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Personal Brands</h3>
+                        <p class="text-gray-400 mb-4">Unique identities for influencers and professionals</p>
+                        <a href="gallery.html?category=personal" class="text-white font-medium hover:underline">View Collection →</a>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-2 logo-item">
+                    <img src="https://placehold.co/600x400" alt="Vibrant retail shop logos with bold typography and illustrative elements" 
+                         class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Retail & Shop Logos</h3>
+                        <p class="text-gray-400 mb-4">Eye-catching designs for stores and e-commerce</p>
+                        <a href="gallery.html?category=retail" class="text-white font-medium hover:underline">View Collection →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="gallery.html" class="inline-block border-2 border-white text-white px-8 py-3 rounded font-medium transition-colors hover:bg-white hover:text-black">
+                    View Complete Gallery
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Process Section -->
+    <section class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Creative Process</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    We follow a meticulous process to ensure your logo perfectly represents your brand identity.
+                </p>
+            </div>
+            
+            <div class="relative">
+                <div class="hidden md:block absolute h-1 bg-gray-700 top-1/2 left-0 right-0 transform -translate-y-1/2"></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="relative text-center bg-gray-900 p-8 rounded-lg shadow-lg z-10">
+                        <div class="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1</div>
+                        <h3 class="text-xl font-bold mb-4">Consultation</h3>
+                        <p class="text-gray-400">We discuss your vision, values, and business objectives.</p>
+                    </div>
+                    
+                    <div class="relative text-center bg-gray-900 p-8 rounded-lg shadow-lg z-10">
+                        <div class="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
+                        <h3 class="text-xl font-bold mb-4">Concept Creation</h3>
+                        <p class="text-gray-400">Our designers craft multiple unique concepts for your brand.</p>
+                    </div>
+                    
+                    <div class="relative text-center bg-gray-900 p-8 rounded-lg shadow-lg z-10">
+                        <div class="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
+                        <h3 class="text-xl font-bold mb-4">Refinement</h3>
+                        <p class="text-gray-400">We refine the chosen concept based on your feedback.</p>
+                    </div>
+                    
+                    <div class="relative text-center bg-gray-900 p-8 rounded-lg shadow-lg z-10">
+                        <div class="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">4</div>
+                        <h3 class="text-xl font-bold mb-4">Delivery</h3>
+                        <p class="text-gray-400">You receive final files in all required formats with full rights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Don't just take our word for it - hear from brands we've helped elevate.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-8 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                            <img src="https://placehold.co/100x100" alt="Portrait of Sarah Johnson, marketing director at TechStart" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Sarah Johnson</h4>
+                            <p class="text-gray-400 text-sm">Marketing Director, TechStart</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        "The logo EliteLogos created perfectly captured our tech-forward yet approachable brand identity. We've received countless compliments!"
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-8 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                            <img src="https://placehold.co/100x100" alt="Portrait of Michael Chen, founder of UrbanBrew Coffee" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Michael Chen</h4>
+                            <p class="text-gray-400 text-sm">Founder, UrbanBrew Coffee</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        "Our coffee shop logo stands out in a crowded market. The designers nailed the urban yet artisanal vibe we wanted."
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 p-8 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                            <img src="https://placehold.co/100x100" alt="Portrait of David Rodriguez, creative director at FashionForward" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">David Rodriguez</h4>
+                            <p class="text-gray-400 text-sm">Creative Director, FashionForward</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        "Working with EliteLogos was a seamless experience. They delivered multiple exceptional concepts that made choosing difficult!"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-black relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl opacity-70 animate-pulse"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-500 rounded-full filter blur-3xl opacity-70 animate-pulse delay-300"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 z-10">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Ready to Start Your Project?</h2>
+                <p class="text-gray-400 mb-8">Contact us today to discuss your logo design needs and get a quote.</p>
+                <a href="contact.html" class="cta-button bg-white text-black px-8 py-3 rounded font-medium transition-colors hover:bg-gray-200">

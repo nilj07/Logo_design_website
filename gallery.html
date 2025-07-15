@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | EliteLogos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --primary: #000000;
+            --secondary: #222222;
+            --accent: #ffffff;
+            --highlight: #9d9d9d;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            background-color: var(--primary);
+            color: var(--accent);
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="navbar bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold">
+                <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors font-bold">Gallery</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+            </div>
+            <button class="md:hidden text-2xl" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Gallery Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <h1 class="text-3xl font-bold mb-6">Our Logo Gallery</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="galleryGrid">
+                <!-- Logos will be loaded from localStorage -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2023 EliteLogos. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        // Load saved logos from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLogos = JSON.parse(localStorage.getItem('elitelogos_logos')) || [];
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            galleryGrid.innerHTML = '';
+            savedLogos.forEach(logo => {
+                const logoItem = document.createElement('div');
+                logoItem.className = 'bg-gray-800 rounded-lg overflow-hidden';
+                logoItem.innerHTML = `
+                    <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold">${logo.title}</h3>
+                        <p class="text-gray-400">${logo.category}</p>
+                    </div>
+                `;
+                galleryGrid.appendChild(logoItem);
+            });
+        });
+    </script>
+</body>
+</html>

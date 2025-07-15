@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | EliteLogos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --primary: #000000;
+            --secondary: #222222;
+            --accent: #ffffff;
+            --highlight: #9d9d9d;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            background-color: var(--primary);
+            color: var(--accent);
+            overflow-x: hidden;
+        }
+        .delete-btn {
+            transition: all 0.2s ease;
+        }
+        .delete-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="navbar bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold">
+                <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors font-bold">Gallery</a>
+                <a href="services.html" class="hover:text-gray-300 transition-colors">Services</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+            </div>
+            <button class="md:hidden text-2xl" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-black bg-opacity-90 absolute w-full left-0 px-6 pb-4" id="mobile-menu">
+            <div class="flex flex-col space-y-4 mt-4">
+                <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+                <a href="services.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Services</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-24"> <!-- Added padding to account for fixed nav -->
+        <section class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <h1 class="text-3xl font-bold mb-6">Add New Logo</h1>
+                <form id="addLogoForm" class="bg-gray-800 p-6 rounded-lg">
+                    <div class="form-group mb-4">
+                        <label for="logoTitle" class="block mb-2">Logo Title</label>
+                        <input type="text" style="color: black;" id="logoTitle" name="logoTitle" required class="w-full p-2 rounded">
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="logoImage" class="block mb-2">Logo Image URL</label>
+                        <input type="url" id="logoImage" style="color: black;" name="logoImage" required class="w-full p-2 rounded">
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="logoCategory" class="block mb-2">Category</label>
+                        <select id="logoCategory" name="logoCategory" class="w-full p-2 rounded">
+                            <option value="corporate">Corporate</option>
+                            <option value="personal">Personal</option>
+                            <option value="retail">Retail</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="bg-gold text-black px-4 py-2 rounded">Add Logo</button>
+                </form>
+                
+                <div id="galleryPreview" class="gallery-preview mt-6">
+                    <h2 class="text-2xl font-bold mb-4">Gallery Preview</h2>
+                    <div class="gallery-grid grid grid-cols-1 md:grid-cols-3 gap-6" id="galleryGrid">
+                        <!-- Existing gallery items will appear here -->
+                    </div>
+                </div>
+                
+                <!-- Hidden form to sync with gallery.html -->
+                <form id="syncForm" action="gallery.html" method="post" target="syncFrame" style="display:none;">
+                    <input type="hidden" name="logoData" id="logoData">
+                </form>
+                <iframe name="syncFrame" id="syncFrame" style="display:none;"></iframe>
+            </div>
+        </section>
+
+        <footer class="bg-black text-white py-6">
+            <div class="container mx-auto text-center">
+                <p>&copy; 2023 EliteLogos. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <script>
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Admin panel functionality
+            const addLogoForm = document.getElementById('addLogoForm');
+            const galleryGrid = document.getElementById('galleryGrid');
+
+            // Load saved logos from localStorage
+            function loadLogos() {
+                const savedLogos = JSON.parse(localStorage.getItem('elitelogos_logos')) || [];
+                savedLogos.forEach(logo => {
+                    addLogoToGallery(logo.title, logo.image, logo.category);
+                });
+            }
+
+            function addLogoToGallery(title, image, category) {
+                const newItem = document.createElement('div');
+                newItem.classList.add('gallery-item', 'bg-gray-800', 'rounded-lg', 'overflow-hidden', 'relative');
+                newItem.innerHTML = `
+                    <img src="${image}" alt="${title}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold">${title}</h3>
+                        <p class="text-gray-400">${category}</p>
+                        <button class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+                    </div>
+                `;
+                newItem.querySelector('.delete-btn').onclick = function() {
+                    removeLogo(title);
+                    newItem.remove();
+                };
+                galleryGrid.appendChild(newItem);
+            }
+
+            function saveLogo(title, image, category) {
+                const logos = JSON.parse(localStorage.getItem('elitelogos_logos')) || [];
+                logos.push({ title, image, category });
+                localStorage.setItem('elitelogos_logos', JSON.stringify(logos));
+            }
+
+            function removeLogo(title) {
+                let logos = JSON.parse(localStorage.getItem('elitelogos_logos')) || [];
+                logos = logos.filter(logo => logo.title !== title);
+                localStorage.setItem('elitelogos_logos', JSON.stringify(logos));
+            }
+
+            if (addLogoForm) {
+                addLogoForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const logoTitle = this.logoTitle.value.trim();
+                    const logoImage = this.logoImage.value.trim();
+                    const logoCategory = this.logoCategory.value;
+
+                    // Save and display the new logo
+                    saveLogo(logoTitle, logoImage, logoCategory);
+                    addLogoToGallery(logoTitle, logoImage, logoCategory);
+                    
+                    // Sync with gallery.html
+                    const logoData = JSON.stringify({
+                        title: logoTitle,
+                        image: logoImage,
+                        category: logoCategory
+                    });
+                    document.getElementById('logoData').value = logoData;
+                    document.getElementById('syncForm').submit();
+                    
+                    // Reset the form
+                    this.reset();
+                });
+            }
+
+            // Initial render
+            document.addEventListener('DOMContentLoaded', loadLogos);
+        </script>
+    </body>
+</html>
