@@ -113,6 +113,22 @@
         </footer>
 
         <script>
+            // Admin Panel Access Control
+            const adminPass = 'QGRtMW4kM2N1cjNQADU1'; // Base64 encoded password
+            const adminLink = document.querySelector('a[href="admin.html"]');
+            if (adminLink) {
+                adminLink.addEventListener('click', (e) => {
+                    const enteredPass = prompt('Enter admin password:');
+                    const passHash = btoa(enteredPass);
+                    if (passHash !== adminPass) {
+                        e.preventDefault();
+                        alert('Access denied: Incorrect password');
+                        window.location.href = 'index.html';
+                        return false;
+                    }
+                });
+            }
+
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
