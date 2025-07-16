@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EliteLogos Admin</title>
 
-  <!-- Safe Tailwind -->
+  <!-- Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
-<body class="bg-black text-white font-sans p-6">
+<body class="bg-black text-white p-6 font-sans">
 
-  <h1 class="text-3xl font-bold mb-4">Add Logo</h1>
+  <h1 class="text-3xl font-bold mb-6">Admin - Add Logo</h1>
 
   <form id="addLogoForm" class="space-y-4 max-w-md">
     <input type="text" id="logoTitle" placeholder="Title" class="w-full p-2 rounded text-black" required />
@@ -31,7 +31,6 @@
   <div id="status" class="mt-4 text-green-400"></div>
 
   <script>
-    // ✅ Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
       authDomain: "thelogobucket-6389b.firebaseapp.com",
@@ -66,7 +65,7 @@
       const category = document.getElementById("logoCategory").value;
 
       if (!title || !imageFile || !category) {
-        alert("All fields required!");
+        alert("All fields are required.");
         return;
       }
 
@@ -76,8 +75,8 @@
         form.reset();
         status.textContent = "✅ Logo added successfully!";
       } catch (err) {
-        console.error("Upload Error:", err);
-        status.textContent = "❌ Failed to upload logo.";
+        console.error("Error:", err);
+        status.textContent = "❌ Error adding logo.";
       }
     });
   </script>
