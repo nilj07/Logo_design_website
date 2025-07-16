@@ -122,27 +122,28 @@
             const firebaseConfig = {
                 apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
                 authDomain: "thelogobucket-6389b.firebaseapp.com",
-                databaseURL: "https://thelogobucket-6389b.firebaseio.com",
-                projectId: "thelogobucket-6389b",
+                databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com/",
+                projectId: "your-project-id",
                 storageBucket: "thelogobucket-6389b.firebasestorage.app",
                 messagingSenderId: "237466771183",
                 appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
             };
             firebase.initializeApp(firebaseConfig);
             const database = firebase.database();
-            // Ensure password is accessible for friends
-            const ADMIN_PASSWORD = "sharedpassword123";
-            // Initialize Firebase
             
-            // Simple Password Protection
-            let passwordEntered = localStorage.getItem('admin-authenticated');
-            if (!passwordEntered && window.location.pathname.includes('admin.html')) {
-                const password = prompt('Enter Admin Password:');
-                if (password === 'yourpassword123') {
-                    localStorage.setItem('admin-authenticated', 'true');
-                } else {
-                    alert('Incorrect password!');
-                    window.location.href = 'index.html';
+            // Password Protection
+            if (window.location.pathname.includes('admin.html')) {
+                const ADMIN_PASSWORD = "yoursecurepassword123";
+                const storedAuth = sessionStorage.getItem('admin-auth');
+                if (!storedAuth || storedAuth !== ADMIN_PASSWORD) {
+                    const enteredPass = prompt('Enter Admin Password:');
+                    if (enteredPass === ADMIN_PASSWORD) {
+                        sessionStorage.setItem('admin-auth', ADMIN_PASSWORD);
+                    } else {
+                        alert('Incorrect password!');
+                        window.location.href = 'index.html';
+                        return;
+                    }
                 }
             }
 
@@ -168,21 +169,34 @@
 
             // Load saved logos from localStorage
             function loadLogos() {
-                try {
-                    database.ref('logos').orderByChild('timestamp').on('value', (snapshot) => {
-                        galleryGrid.innerHTML = '';
-                        const logos = snapshot.val();
-                        if (logos) {
-                            for (const key in logos) {
-                                addLogoToGallery(logos[key].title, logos[key].image, logos[key].category);
-                            }
-                        }
-                    }, (error) => {
-                        console.error('Error loading logos:', error);
+                database.ref('logos').orderByChild('timestamp').on('value', (snapshot) => {
+                    galleryGrid.innerHTML = '';
+                    const logos = snapshot.val();
+                    
+                    if (!logos) {
+                        console.log('No logos found in database');
+                        return;
+                    }
+                    
+                    Object.keys(logos).forEach(key => {
+                        const logo = logos[key];
+                        const logoItem = document.createElement('div');
+                        logoItem.className = 'bg-gray-800 rounded-lg overflow-hidden shadow-lg';
+                        logoItem.innerHTML = `
+                            <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <h3 class="text-xl font-bold mb-2">${logo.title}</h3>
+                                <p class="text-gray-300 mb-2">${logo.category}</p>
+                                <button onclick="removeLogo('${key}')" class="delete-btn bg-red-500 text-white px-3 py-1 rounded">
+                                    Delete
+                                </button>
+                            </div>
+                        `;
+                        galleryGrid.appendChild(logoItem);
                     });
-                } catch (error) {
-                    console.error('Error in loadLogos:', error);
-                }
+                }, (error) => {
+                    console.error('Database read failed:', error);
+                });
             }
 
             function addLogoToGallery(title, image, category) {
@@ -203,25 +217,32 @@
                 galleryGrid.appendChild(newItem);
             }
 
-            async function saveLogo(title, imageFile, category) {
-                try {
+            function saveLogo(title, imageFile, category) {
+                return new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = async function(e) {
-                        const imageBase64 = e.target.result;
-                        await database.ref('logos').push({
-                            title,
-                            image: imageBase64,
-                            category,
-                            timestamp: firebase.database.ServerValue.TIMESTAMP
-                        });
-                        alert('Logo saved successfully!');
-                        loadLogos(); // Refresh gallery
+                        try {
+                            const logoData = {
+                                title,
+                                image: e.target.result,
+                                category,
+                                timestamp: firebase.database.ServerValue.TIMESTAMP
+                            };
+                            
+                            const newLogoRef = database.ref('logos').push();
+                            await newLogoRef.set(logoData);
+                            
+                            alert('Logo saved successfully! ID: ' + newLogoRef.key);
+                            loadLogos();
+                            resolve(newLogoRef.key);
+                        } catch (error) {
+                            console.error('Save error:', error);
+                            alert('Failed to save logo');
+                            reject(error);
+                        }
                     };
                     reader.readAsDataURL(imageFile);
-                } catch (error) {
-                    console.error('Error saving logo:', error);
-                    alert('Error saving logo. Please check console for details.');
-                }
+                });
             }
 
             function removeLogo(key) {
@@ -229,30 +250,24 @@
             }
 
             if (addLogoForm) {
-                addLogoForm.addEventListener('submit', function(e) {
+                addLogoForm.addEventListener('submit', async function(e) {
                     e.preventDefault();
                     
-                    const logoTitle = this.logoTitle.value.trim();
-                    const logoImage = this.logoImage.files[0];
-                    const logoCategory = this.logoCategory.value;
-
-                    // Save and display the new logo
-                    saveLogo(logoTitle, logoImage, logoCategory);
-                    addLogoToGallery(logoTitle, logoImage, logoCategory);
+                    const title = this.logoTitle.value.trim();
+                    const imageFile = this.logoImage.files[0];
+                    const category = this.logoCategory.value;
                     
-                    // Store logo data that will be synced via Netlify
-                    const newLogo = { title: logoTitle, image: logoImage, category: logoCategory };
+                    if (!title || !imageFile || !category) {
+                        alert('Please fill all fields');
+                        return;
+                    }
                     
-                    // For Netlify deployment - you'll need to:
-                    // 1. Commit this change to your repo
-                    // 2. Push to GitHub/GitLab
-                    // 3. Netlify will auto-deploy the changes
-                    // 4. All users will see updates on next page load
-                    
-                    // Reset the form
-                    this.reset();
-                    
-                    alert('Logo added! Changes will be visible to all users after deployment completes.');
+                    try {
+                        await saveLogo(title, imageFile, category);
+                        this.reset();
+                    } catch (error) {
+                        console.error('Submission error:', error);
+                    }
                 });
             }
 
