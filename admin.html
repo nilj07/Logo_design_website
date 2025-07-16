@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,49 +24,32 @@
   </style>
 </head>
 <body class="min-h-screen">
-  <!-- Navigation -->
-  <nav
-    class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg"
-  >
+  <!-- Navbar -->
+  <nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">EliteLogos</a>
+      <a href="index.html" class="text-2xl font-bold">
+        <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+      </a>
       <div class="hidden md:flex space-x-8">
-        <a href="index.html" class="hover:text-gray-300 transition-colors"
-          >Home</a
-        >
-        <a href="gallery.html" class="hover:text-gray-300 transition-colors"
-          >Gallery</a
-        >
-        <a href="admin.html" class="hover:text-gray-300 transition-colors font-bold"
-          >Admin</a
-        >
+        <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+        <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
+        <a href="services.html" class="hover:text-gray-300 transition-colors">Services</a>
+        <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+        <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+        <a href="admin.html" class="hover:text-gray-300 transition-colors font-bold">Admin</a>
       </div>
       <button class="md:hidden text-2xl" id="menu-toggle">
         <i class="fas fa-bars" id="menu-icon"></i>
       </button>
     </div>
-
-    <!-- Mobile Menu -->
-    <div
-      class="hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4"
-      id="mobile-menu"
-    >
+    <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
       <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
-        <a
-          href="index.html"
-          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
-          >Home</a
-        >
-        <a
-          href="gallery.html"
-          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
-          >Gallery</a
-        >
-        <a
-          href="admin.html"
-          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
-          >Admin</a
-        >
+        <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+        <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+        <a href="services.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Services</a>
+        <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+        <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+        <a href="admin.html" class="hover:text-gray-300 transition-colors font-bold">Admin</a>
       </div>
     </div>
   </nav>
@@ -76,52 +59,28 @@
 
     <form id="addLogoForm" class="mb-8">
       <label class="block mb-2" for="logoTitle">Logo Title</label>
-      <input
-        type="text"
-        id="logoTitle"
-        required
-        class="w-full p-2 mb-4 rounded text-black"
-      />
+      <input type="text" id="logoTitle" required class="w-full p-2 mb-4 rounded text-black" />
 
       <label class="block mb-2" for="logoImage">Logo Image</label>
-      <input
-        type="file"
-        id="logoImage"
-        accept="image/*"
-        required
-        class="w-full p-2 mb-4 rounded"
-      />
-      <small class="text-gray-400 mb-4 block"
-        >(Take photo or upload from device)</small
-      >
+      <input type="file" id="logoImage" accept="image/*" required class="w-full p-2 mb-4 rounded" />
+      <small class="text-gray-400 mb-4 block">(Take photo or upload from device)</small>
 
       <label class="block mb-2" for="logoCategory">Category</label>
-      <select
-        id="logoCategory"
-        required
-        class="w-full p-2 mb-4 rounded text-black"
-      >
+      <select id="logoCategory" required class="w-full p-2 mb-4 rounded text-black">
         <option value="" disabled selected>Select category</option>
         <option value="Corporate">Corporate</option>
         <option value="Personal">Personal</option>
         <option value="Retail">Retail</option>
       </select>
 
-      <button
-        type="submit"
-        class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500"
-      >
+      <button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">
         Add Logo
       </button>
     </form>
 
     <section>
       <h2 class="text-2xl font-bold mb-4">Gallery Preview</h2>
-      <div
-        id="galleryGrid"
-        class="grid grid-cols-1 md:grid-cols-3 gap-6"
-        aria-live="polite"
-      ></div>
+      <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-live="polite"></div>
     </section>
   </main>
 
@@ -131,13 +90,9 @@
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <script>
-    // Password protection
-    const ADMIN_PASSWORD = "yourpassword123"; // Change this
+   const ADMIN_PASSWORD = "yourpassword123"; // Change this
 
     if (!sessionStorage.getItem("admin-auth")) {
       const entered = prompt("Enter admin password:");
@@ -165,101 +120,63 @@
       });
     }
 
-    // Firebase config - REPLACE with your actual config
-    const firebaseConfig = {
-      apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
-      authDomain: "thelogobucket-6389b.firebaseapp.com",
-      databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com/",
-      projectId: "thelogobucket-6389b",
-      storageBucket: "thelogobucket-6389b.firebasestorage.app",
-      messagingSenderId: "237466771183",
-      appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
     const addLogoForm = document.getElementById("addLogoForm");
     const galleryGrid = document.getElementById("galleryGrid");
 
-    // Load logos from Firebase and display in preview
+    // Load logos from localStorage and display preview
     function loadLogos() {
-      database.ref("logos").orderByChild("timestamp").on(
-        "value",
-        (snapshot) => {
-          galleryGrid.innerHTML = "";
-          const logos = snapshot.val();
-          if (!logos) {
-            galleryGrid.innerHTML = '<p class="text-gray-400">No logos found.</p>';
-            return;
-          }
-          Object.keys(logos).forEach((key) => {
-            const logo = logos[key];
-            const logoItem = document.createElement("div");
-            logoItem.className = "bg-gray-800 rounded-lg overflow-hidden shadow-lg";
-            logoItem.innerHTML = `
-              <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover" />
-              <div class="p-4">
-                <h3 class="text-xl font-bold mb-2">${logo.title}</h3>
-                <p class="text-gray-300 mb-2">${logo.category}</p>
-                <button onclick="removeLogo('${key}')" class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-              </div>
-            `;
-            galleryGrid.appendChild(logoItem);
-          });
-        },
-        (error) => {
-          console.error("Error loading logos:", error);
-          galleryGrid.innerHTML = '<p class="text-red-500">Failed to load logos.</p>';
-        }
-      );
-    }
-
-    // Remove logo by key
-    function removeLogo(key) {
-      if (confirm("Are you sure you want to delete this logo?")) {
-        database
-          .ref("logos/" + key)
-          .remove()
-          .then(() => {
-            alert("Logo deleted successfully.");
-          })
-          .catch((error) => {
-            alert("Error deleting logo: " + error.message);
-          });
+      galleryGrid.innerHTML = "";
+      const logos = JSON.parse(localStorage.getItem("elitelogos_logos")) || [];
+      if (logos.length === 0) {
+        galleryGrid.innerHTML = '<p class="text-gray-400">No logos added yet.</p>';
+        return;
       }
-    }
+      logos.forEach(({ title, image, category }, index) => {
+        const div = document.createElement("div");
+        div.className = "bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+        div.innerHTML = `
+          <img src="${image}" alt="${title}" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h3 class="text-xl font-bold mb-2">${title}</h3>
+            <p class="text-gray-300 mb-2">${category}</p>
+            <button data-index="${index}" class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+          </div>
+        `;
+        galleryGrid.appendChild(div);
+      });
 
-    // Convert image file to base64 and save logo
-    function saveLogo(title, imageFile, category) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = async function (e) {
-          try {
-            const logoData = {
-              title,
-              image: e.target.result,
-              category,
-              timestamp: firebase.database.ServerValue.TIMESTAMP,
-            };
-            const newLogoRef = database.ref("logos").push();
-            await newLogoRef.set(logoData);
-            resolve(newLogoRef.key);
-          } catch (error) {
-            reject(error);
-          }
-        };
-        reader.readAsDataURL(imageFile);
+      // Attach delete handlers
+      document.querySelectorAll(".delete-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const idx = e.target.getAttribute("data-index");
+          deleteLogo(idx);
+        });
       });
     }
 
-    // Handle form submission
+    // Delete logo by index
+    function deleteLogo(index) {
+      const logos = JSON.parse(localStorage.getItem("elitelogos_logos")) || [];
+      logos.splice(index, 1);
+      localStorage.setItem("elitelogos_logos", JSON.stringify(logos));
+      loadLogos();
+    }
+
+    // Convert image file to base64
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
     addLogoForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const title = addLogoForm.logoTitle.value.trim();
-      const imageFile = addLogoForm.logoImage.files[0];
-      const category = addLogoForm.logoCategory.value;
+      const title = document.getElementById("logoTitle").value.trim();
+      const imageFile = document.getElementById("logoImage").files[0];
+      const category = document.getElementById("logoCategory").value;
 
       if (!title || !imageFile || !category) {
         alert("Please fill all fields.");
@@ -267,16 +184,21 @@
       }
 
       try {
-        await saveLogo(title, imageFile, category);
-        alert("Logo added successfully!");
+        const imageBase64 = await fileToBase64(imageFile);
+        const logos = JSON.parse(localStorage.getItem("elitelogos_logos")) || [];
+        logos.push({ title, image: imageBase64, category });
+        localStorage.setItem("elitelogos_logos", JSON.stringify(logos));
+        loadLogos();
         addLogoForm.reset();
+        alert("Logo added successfully!");
       } catch (error) {
-        alert("Error adding logo: " + error.message);
+        alert("Error reading image file.");
+        console.error(error);
       }
     });
 
-    // Load logos on page load
-    document.addEventListener("DOMContentLoaded", loadLogos);
+    // Initial load
+    loadLogos();
   </script>
 </body>
 </html>
