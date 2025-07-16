@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,14 +20,91 @@
   </style>
 </head>
 <body class="min-h-screen p-6">
-  <h1 class="text-3xl font-bold mb-6">Logo Gallery</h1>
-  <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+  <!-- Navigation -->
+  <nav
+    class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg"
+  >
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">EliteLogos</a>
+      <div class="hidden md:flex space-x-8">
+        <a href="index.html" class="hover:text-gray-300 transition-colors"
+          >Home</a
+        >
+        <a
+          href="gallery.html"
+          class="hover:text-gray-300 transition-colors font-bold"
+          >Gallery</a
+        >
+        <a href="admin.html" class="hover:text-gray-300 transition-colors"
+          >Admin</a
+        >
+      </div>
+      <button class="md:hidden text-2xl" id="menu-toggle">
+        <i class="fas fa-bars" id="menu-icon"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div
+      class="hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4"
+      id="mobile-menu"
+    >
+      <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
+        <a
+          href="index.html"
+          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
+          >Home</a
+        >
+        <a
+          href="gallery.html"
+          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
+          >Gallery</a
+        >
+        <a
+          href="admin.html"
+          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
+          >Admin</a
+        >
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 container mx-auto px-6">
+    <h1 class="text-3xl font-bold mb-6">Logo Gallery</h1>
+    <div
+      id="galleryGrid"
+      class="grid grid-cols-1 md:grid-cols-3 gap-6"
+      aria-live="polite"
+    ></div>
+  </main>
+
+  <footer class="bg-black text-white py-6 mt-12">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2023 EliteLogos. All rights reserved.</p>
+    </div>
+  </footer>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
   <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+
+    if (menuToggle && mobileMenu && menuIcon) {
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        if (mobileMenu.classList.contains("hidden")) {
+          menuIcon.classList.replace("fa-times", "fa-bars");
+        } else {
+          menuIcon.classList.replace("fa-bars", "fa-times");
+        }
+      });
+    }
+
     // Firebase config - REPLACE with your actual config
     const firebaseConfig = {
       apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
@@ -59,7 +136,8 @@
           Object.keys(logos).forEach((key) => {
             const logo = logos[key];
             const logoItem = document.createElement("div");
-            logoItem.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+            logoItem.className =
+              "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
             logoItem.innerHTML = `
               <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover" />
               <div class="p-4">
