@@ -175,7 +175,7 @@
         addLogoForm.reset();
         alert("Logo added successfully!");
       } catch (error) {
-        alert("Error reading image file.");
+        alert("Error adding logo: " + error.message);
         console.error(error);
       }
     });
