@@ -4,10 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin Panel | EliteLogos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind CSS (static CDN build to avoid eval CSP error) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
   <style>
     body {
       background-color: #000;
@@ -23,6 +30,7 @@
   </style>
 </head>
 <body class="min-h-screen">
+  <!-- Navbar -->
   <nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
       <a href="index.html" class="text-2xl font-bold">
@@ -31,9 +39,11 @@
     </div>
   </nav>
 
+  <!-- Main -->
   <main class="pt-24 container mx-auto px-6 max-w-lg">
     <h1 class="text-3xl font-bold mb-6">Admin Panel - Add New Logo</h1>
 
+    <!-- Form -->
     <form id="addLogoForm" class="mb-8">
       <label class="block mb-2" for="logoTitle">Logo Title</label>
       <input type="text" id="logoTitle" required class="w-full p-2 mb-4 rounded text-black" />
@@ -53,113 +63,110 @@
       <button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Add Logo</button>
     </form>
 
+    <!-- Preview -->
     <section>
       <h2 class="text-2xl font-bold mb-4">Gallery Preview</h2>
       <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-live="polite"></div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer class="bg-black text-white py-6 mt-12">
     <div class="container mx-auto text-center">
       <p>&copy; 2023 EliteLogos. All rights reserved.</p>
     </div>
   </footer>
 
+  <!-- Firebase Logic -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Initialize Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
-        authDomain: "thelogobucket-6389b.firebaseapp.com",
-        databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com",
-        projectId: "thelogobucket-6389b",
-        storageBucket: "thelogobucket-6389b.appspot.com",
-        messagingSenderId: "237466771183",
-        appId: "1:237466771183:web:4984a3b31ff5f266c4451a",
-        measurementId: "G-L9FHS6DB01"
-      };
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
+      authDomain: "thelogobucket-6389b.firebaseapp.com",
+      databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com",
+      projectId: "thelogobucket-6389b",
+      storageBucket: "thelogobucket-6389b.appspot.com",
+      messagingSenderId: "237466771183",
+      appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-      firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
+    const addLogoForm = document.getElementById("addLogoForm");
+    const galleryGrid = document.getElementById("galleryGrid");
 
-      const addLogoForm = document.getElementById("addLogoForm");
-      const galleryGrid = document.getElementById("galleryGrid");
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
 
-      function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file);
-        });
-      }
-
-      function loadLogos() {
-        galleryGrid.innerHTML = "";
-        database.ref("logos").once("value", (snapshot) => {
-          const logos = snapshot.val();
-          if (!logos) {
-            galleryGrid.innerHTML = '<p class="text-gray-400">No logos added yet.</p>';
-            return;
-          }
-          Object.entries(logos).forEach(([key, { title, image, category }]) => {
-            const div = document.createElement("div");
-            div.className = "bg-gray-800 rounded-lg overflow-hidden shadow-lg";
-            div.innerHTML = `
-              <img src="${image}" alt="${title}" class="w-full h-48 object-cover" />
-              <div class="p-4">
-                <h3 class="text-xl font-bold mb-2">${title}</h3>
-                <p class="text-gray-300 mb-2">${category}</p>
-                <button data-key="${key}" class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-              </div>
-            `;
-            galleryGrid.appendChild(div);
-          });
-
-          // Handle delete
-          document.querySelectorAll(".delete-btn").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-              const key = e.target.getAttribute("data-key");
-              deleteLogo(key);
-            });
-          });
-        });
-      }
-
-      function deleteLogo(key) {
-        database.ref("logos/" + key).remove().then(() => {
-          loadLogos();
-        });
-      }
-
-      addLogoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        console.log("Form submitted"); // For debug
-
-        const title = document.getElementById("logoTitle").value.trim();
-        const imageFile = document.getElementById("logoImage").files[0];
-        const category = document.getElementById("logoCategory").value;
-
-        if (!title || !imageFile || !category) {
-          alert("Please fill all fields.");
+    function loadLogos() {
+      galleryGrid.innerHTML = "";
+      database.ref("logos").once("value").then(snapshot => {
+        const logos = snapshot.val();
+        if (!logos) {
+          galleryGrid.innerHTML = '<p class="text-gray-400">No logos added yet.</p>';
           return;
         }
 
-        try {
-          const imageBase64 = await fileToBase64(imageFile);
-          const newLogoRef = database.ref("logos").push();
-          await newLogoRef.set({ title, image: imageBase64, category });
-          addLogoForm.reset();
-          loadLogos();
-          alert("Logo added successfully!");
-        } catch (error) {
-          alert("Error reading image file.");
-          console.error(error);
-        }
-      });
+        Object.entries(logos).forEach(([key, { title, image, category }]) => {
+          const div = document.createElement("div");
+          div.className = "bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+          div.innerHTML = `
+            <img src="${image}" alt="${title}" class="w-full h-48 object-cover" />
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">${title}</h3>
+              <p class="text-gray-300 mb-2">${category}</p>
+              <button data-key="${key}" class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+            </div>
+          `;
+          galleryGrid.appendChild(div);
+        });
 
-      loadLogos();
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", e => {
+            const key = e.target.getAttribute("data-key");
+            deleteLogo(key);
+          });
+        });
+      });
+    }
+
+    function deleteLogo(key) {
+      database.ref("logos/" + key).remove().then(() => {
+        loadLogos();
+      });
+    }
+
+    addLogoForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("logoTitle").value.trim();
+      const imageFile = document.getElementById("logoImage").files[0];
+      const category = document.getElementById("logoCategory").value;
+
+      if (!title || !imageFile || !category) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      try {
+        const imageBase64 = await fileToBase64(imageFile);
+        const newLogoRef = database.ref("logos").push();
+        await newLogoRef.set({ title, image: imageBase64, category });
+        loadLogos();
+        addLogoForm.reset();
+        alert("Logo added successfully!");
+      } catch (error) {
+        alert("Error uploading logo.");
+        console.error(error);
+      }
     });
+
+    // Initial load
+    loadLogos();
   </script>
 </body>
 </html>
