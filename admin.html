@@ -1,5 +1,5 @@
 <!-- ============================ -->
-<!-- ✅ admin.html - FINAL CODE -->
+<!-- ✅ admin.html - DEBUGGED FINAL -->
 <!-- ============================ -->
 
 <!DOCTYPE html>
@@ -43,7 +43,9 @@
       appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
 
     const form = document.getElementById("addLogoForm");
@@ -73,8 +75,10 @@
         const imageBase64 = await fileToBase64(imageFile);
         await db.ref("logos").push({ title, image: imageBase64, category });
         form.reset();
+        alert("✅ Logo uploaded successfully!");
       } catch (err) {
-        alert("Upload failed: " + err.message);
+        console.error("Upload error:", err);
+        alert("❌ Upload failed: " + err.message);
       }
     });
 
