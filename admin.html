@@ -117,20 +117,14 @@
 
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
         <script>
-            // Initialize Firebase (REPLACE THESE VALUES WITH YOUR FIREBASE CONFIG)
+            // Initialize Firebase - replace with your actual config values
             const firebaseConfig = {
                 apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
                 authDomain: "thelogobucket-6389b.firebaseapp.com",
                 databaseURL: "https://thelogobucket-6389b.firebaseio.com",
                 projectId: "thelogobucket-6389b",
-                storageBucket: "thelogobucket-6389b.firebasestorage.app", 
+                storageBucket: "thelogobucket-6389b.firebasestorage.app",
                 messagingSenderId: "237466771183",
                 appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
             };
@@ -138,29 +132,19 @@
             const database = firebase.database();
             // Ensure password is accessible for friends
             const ADMIN_PASSWORD = "sharedpassword123";
-
-
+            // Initialize Firebase
             
-            // Admin Panel Access Control
-            function checkAdminAccess() {
-                // Skip check if we're already on admin page
-                if (window.location.pathname.includes('admin.html')) {
-                    const savedAuth = localStorage.getItem('adminAuthenticated');
-                    if (!savedAuth) {
-                        const enteredPass = prompt('Enter admin password:');
-                        if (enteredPass === '@dm1n$3cur3P@55') {
-                            localStorage.setItem('adminAuthenticated', 'true');
-                            return true;
-                        }
-                        alert('Access denied: Incorrect password');
-                        window.location.href = 'index.html';
-                        return false;
-                    }
-                    return true;
+            // Simple Password Protection
+            let passwordEntered = localStorage.getItem('admin-authenticated');
+            if (!passwordEntered && window.location.pathname.includes('admin.html')) {
+                const password = prompt('Enter Admin Password:');
+                if (password === 'yourpassword123') {
+                    localStorage.setItem('admin-authenticated', 'true');
+                } else {
+                    alert('Incorrect password!');
+                    window.location.href = 'index.html';
                 }
-                return true;
             }
-            checkAdminAccess();
 
             // Mobile menu toggle
             const menuToggle = document.getElementById('menu-toggle');
@@ -184,13 +168,21 @@
 
             // Load saved logos from localStorage
             function loadLogos() {
-                database.ref('logos').orderByChild('timestamp').on('value', (snapshot) => {
-                    galleryGrid.innerHTML = ''; // Clear existing
-                    const logos = snapshot.val();
-                    for (const key in logos) {
-                        addLogoToGallery(logos[key].title, logos[key].image, logos[key].category);
-                    }
-                });
+                try {
+                    database.ref('logos').orderByChild('timestamp').on('value', (snapshot) => {
+                        galleryGrid.innerHTML = '';
+                        const logos = snapshot.val();
+                        if (logos) {
+                            for (const key in logos) {
+                                addLogoToGallery(logos[key].title, logos[key].image, logos[key].category);
+                            }
+                        }
+                    }, (error) => {
+                        console.error('Error loading logos:', error);
+                    });
+                } catch (error) {
+                    console.error('Error in loadLogos:', error);
+                }
             }
 
             function addLogoToGallery(title, image, category) {
@@ -212,18 +204,24 @@
             }
 
             async function saveLogo(title, imageFile, category) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const imageBase64 = e.target.result;
-                    // Save to Firebase Realtime Database
-                    await database.ref('logos').push({
-                        title,
-                        image: imageBase64,
-                        category,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    });
-                };
-                reader.readAsDataURL(imageFile);
+                try {
+                    const reader = new FileReader();
+                    reader.onload = async function(e) {
+                        const imageBase64 = e.target.result;
+                        await database.ref('logos').push({
+                            title,
+                            image: imageBase64,
+                            category,
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        });
+                        alert('Logo saved successfully!');
+                        loadLogos(); // Refresh gallery
+                    };
+                    reader.readAsDataURL(imageFile);
+                } catch (error) {
+                    console.error('Error saving logo:', error);
+                    alert('Error saving logo. Please check console for details.');
+                }
             }
 
             function removeLogo(key) {
