@@ -117,21 +117,30 @@
 
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
         <script>
-            // Initialize Firebase
+            // Initialize Firebase (REPLACE THESE VALUES WITH YOUR FIREBASE CONFIG)
             const firebaseConfig = {
-                 apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
-                    authDomain: "thelogobucket-6389b.firebaseapp.com",
-                    projectId: "thelogobucket-6389b",
-                    storageBucket: "thelogobucket-6389b.firebasestorage.app",
-                    messagingSenderId: "237466771183",
-                    appId: "1:237466771183:web:4984a3b31ff5f266c4451a",
-                    measurementId: "G-L9FHS6DB01"
+                apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
+                authDomain: "thelogobucket-6389b.firebaseapp.com",
+                databaseURL: "https://thelogobucket-6389b.firebaseio.com",
+                projectId: "thelogobucket-6389b",
+                storageBucket: "thelogobucket-6389b.firebasestorage.app", 
+                messagingSenderId: "237466771183",
+                appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
             };
             firebase.initializeApp(firebaseConfig);
             const database = firebase.database();
             // Ensure password is accessible for friends
             const ADMIN_PASSWORD = "sharedpassword123";
+
+
+            
             // Admin Panel Access Control
             function checkAdminAccess() {
                 // Skip check if we're already on admin page
@@ -251,7 +260,6 @@
 
             // Initial render
             document.addEventListener('DOMContentLoaded', loadLogos);
-            
         </script>
     </body>
 </html>
