@@ -1,278 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | EliteLogos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
-        :root {
-            --primary: #000000;
-            --secondary: #222222;
-            --accent: #ffffff;
-            --highlight: #9d9d9d;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
-        body {
-            background-color: var(--primary);
-            color: var(--accent);
-            overflow-x: hidden;
-        }
-        .delete-btn {
-            transition: all 0.2s ease;
-        }
-        .delete-btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel | EliteLogos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .delete-btn {
+      transition: all 0.2s ease;
+    }
+    .delete-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body class="min-h-screen">
-    <!-- Navigation -->
-    <nav class="navbar bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold">
-                <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
-            </a>
-            <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
-                <a href="gallery.html" class="hover:text-gray-300 transition-colors font-bold">Gallery</a>
-                <a href="services.html" class="hover:text-gray-300 transition-colors">Services</a>
-                <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
-                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
-                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
-            </div>
-            <button class="md:hidden text-2xl" id="menu-toggle">
-                <i class="fas fa-bars" id="menu-icon"></i>
-            </button>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div class="hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
-            <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
-                <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
-                <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
-                <a href="services.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Services</a>
-                <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
-                <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
-                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
-            </div>
-        </div>
-    </nav>
+  <!-- Navigation -->
+  <nav
+    class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg"
+  >
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">EliteLogos</a>
+      <div class="hidden md:flex space-x-8">
+        <a href="index.html" class="hover:text-gray-300 transition-colors"
+          >Home</a
+        >
+        <a href="gallery.html" class="hover:text-gray-300 transition-colors"
+          >Gallery</a
+        >
+        <a href="admin.html" class="hover:text-gray-300 transition-colors font-bold"
+          >Admin</a
+        >
+      </div>
+      <button class="md:hidden text-2xl" id="menu-toggle">
+        <i class="fas fa-bars" id="menu-icon"></i>
+      </button>
+    </div>
 
-    <div class="pt-24"> <!-- Added padding to account for fixed nav -->
-        <section class="py-20 bg-gray-900">
-            <div class="container mx-auto px-6">
-                <h1 class="text-3xl font-bold mb-6">Add New Logo</h1>
-                <form id="addLogoForm" class="bg-gray-800 p-6 rounded-lg">
-                    <div class="form-group mb-4">
-                        <label for="logoTitle" class="block mb-2">Logo Title</label>
-                        <input type="text" style="color: black;" id="logoTitle" name="logoTitle" required class="w-full p-2 rounded">
-                    </div>
-                    
-                    <div class="form-group mb-4">
-                        <label for="logoImage" class="block mb-2">Logo Image</label>
-                        <input type="file" id="logoImage" accept="image/*" capture="environment" class="w-full p-2 rounded">
-                        <small class="text-gray-400">(Take photo or upload from device)</small>
-                    </div>
-                    
-                    <div class="form-group mb-4">
-                        <label for="logoCategory" class="block mb-2">Category</label>
-                        <select id="logoCategory" name="logoCategory" class="w-full p-2 rounded">
-                            <option value="corporate">Corporate</option>
-                            <option value="personal">Personal</option>
-                            <option value="retail">Retail</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="bg-gold text-black px-4 py-2 rounded">Add Logo</button>
-                </form>
-                
-                <div id="galleryPreview" class="gallery-preview mt-6">
-                    <h2 class="text-2xl font-bold mb-4">Gallery Preview</h2>
-                    <div class="gallery-grid grid grid-cols-1 md:grid-cols-3 gap-6" id="galleryGrid">
-                        <!-- Existing gallery items will appear here -->
-                    </div>
-                </div>
-                
-                <!-- Hidden form to sync with gallery.html -->
-                <form id="syncForm" action="gallery.html" method="post" target="syncFrame" style="display:none;">
-                    <input type="hidden" name="logoData" id="logoData">
-                </form>
-                <iframe name="syncFrame" id="syncFrame" style="display:none;"></iframe>
-            </div>
-        </section>
+    <!-- Mobile Menu -->
+    <div
+      class="hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4"
+      id="mobile-menu"
+    >
+      <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
+        <a
+          href="index.html"
+          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
+          >Home</a
+        >
+        <a
+          href="gallery.html"
+          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
+          >Gallery</a
+        >
+        <a
+          href="admin.html"
+          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
+          >Admin</a
+        >
+      </div>
+    </div>
+  </nav>
 
-        <footer class="bg-black text-white py-6">
-            <div class="container mx-auto text-center">
-                <p>&copy; 2023 EliteLogos. All rights reserved.</p>
-            </div>
-        </footer>
+  <main class="pt-24 container mx-auto px-6">
+    <h1 class="text-3xl font-bold mb-6">Add New Logo</h1>
+    <form id="addLogoForm" class="bg-gray-800 p-6 rounded-lg max-w-lg">
+      <div class="mb-4">
+        <label for="logoTitle" class="block mb-2">Logo Title</label>
+        <input
+          type="text"
+          id="logoTitle"
+          name="logoTitle"
+          required
+          class="w-full p-2 rounded text-black"
+        />
+      </div>
 
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-        <script>
-            // Initialize Firebase - replace with your actual config values
-            const firebaseConfig = {
-                apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
-                authDomain: "thelogobucket-6389b.firebaseapp.com",
-                databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com/",
-                projectId: "thelogobucket-6389b",
-                storageBucket: "thelogobucket-6389b.firebasestorage.app",
-                messagingSenderId: "237466771183",
-                appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
+      <div class="mb-4">
+        <label for="logoImage" class="block mb-2">Logo Image</label>
+        <input
+          type="file"
+          id="logoImage"
+          name="logoImage"
+          accept="image/*"
+          capture="environment"
+          required
+          class="w-full p-2 rounded"
+        />
+        <small class="text-gray-400"
+          >(Take photo or upload from device)</small
+        >
+      </div>
+
+      <div class="mb-4">
+        <label for="logoCategory" class="block mb-2">Category</label>
+        <select
+          id="logoCategory"
+          name="logoCategory"
+          required
+          class="w-full p-2 rounded text-black"
+        >
+          <option value="" disabled selected>Select category</option>
+          <option value="Corporate">Corporate</option>
+          <option value="Personal">Personal</option>
+          <option value="Retail">Retail</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        class="bg-gold text-black px-4 py-2 rounded hover:bg-yellow-400 transition"
+      >
+        Add Logo
+      </button>
+    </form>
+
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold mb-4">Gallery Preview</h2>
+      <div
+        id="galleryGrid"
+        class="grid grid-cols-1 md:grid-cols-3 gap-6"
+        aria-live="polite"
+      >
+        <!-- Logos will appear here -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-black text-white py-6 mt-12">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2023 EliteLogos. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <script>
+    // Simple password protection
+    const ADMIN_PASSWORD = "yourpassword123"; // Change this to your desired password
+
+    if (window.location.pathname.includes("admin.html")) {
+      const auth = sessionStorage.getItem("admin-auth");
+      if (auth !== ADMIN_PASSWORD) {
+        const entered = prompt("Enter admin password:");
+        if (entered === ADMIN_PASSWORD) {
+          sessionStorage.setItem("admin-auth", ADMIN_PASSWORD);
+        } else {
+          alert("Incorrect password!");
+          window.location.href = "index.html";
+        }
+      }
+    }
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+
+    if (menuToggle && mobileMenu && menuIcon) {
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        if (mobileMenu.classList.contains("hidden")) {
+          menuIcon.classList.replace("fa-times", "fa-bars");
+        } else {
+          menuIcon.classList.replace("fa-bars", "fa-times");
+        }
+      });
+    }
+
+    // Firebase config - REPLACE with your actual config
+    const firebaseConfig = {
+            apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
+      authDomain: "thelogobucket-6389b.firebaseapp.com",
+      databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com/",
+      projectId: "thelogobucket-6389b",
+      storageBucket: "thelogobucket-6389b.firebasestorage.app",
+      messagingSenderId: "237466771183",
+      appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    const addLogoForm = document.getElementById("addLogoForm");
+    const galleryGrid = document.getElementById("galleryGrid");
+
+    // Load logos from Firebase and display in preview
+    function loadLogos() {
+      database.ref("logos").orderByChild("timestamp").on(
+        "value",
+        (snapshot) => {
+          galleryGrid.innerHTML = "";
+          const logos = snapshot.val();
+          if (!logos) {
+            galleryGrid.innerHTML =
+              '<p class="text-gray-400">No logos found.</p>';
+            return;
+          }
+          Object.keys(logos).forEach((key) => {
+            const logo = logos[key];
+            const logoItem = document.createElement("div");
+            logoItem.className =
+              "bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+            logoItem.innerHTML = `
+              <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover" />
+              <div class="p-4">
+                <h3 class="text-xl font-bold mb-2">${logo.title}</h3>
+                <p class="text-gray-300 mb-2">${logo.category}</p>
+                <button onclick="removeLogo('${key}')" class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+              </div>
+            `;
+            galleryGrid.appendChild(logoItem);
+          });
+        },
+        (error) => {
+          console.error("Error loading logos:", error);
+          galleryGrid.innerHTML =
+            '<p class="text-red-500">Failed to load logos.</p>';
+        }
+      );
+    }
+
+    // Remove logo by key
+    function removeLogo(key) {
+      if (confirm("Are you sure you want to delete this logo?")) {
+        database
+          .ref("logos/" + key)
+          .remove()
+          .then(() => {
+            alert("Logo deleted successfully.");
+          })
+          .catch((error) => {
+            alert("Error deleting logo: " + error.message);
+          });
+      }
+    }
+
+    // Save logo to Firebase
+    function saveLogo(title, imageFile, category) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async function (e) {
+          try {
+            const logoData = {
+              title,
+              image: e.target.result,
+              category,
+              timestamp: firebase.database.ServerValue.TIMESTAMP,
             };
-            firebase.initializeApp(firebaseConfig);
-            const database = firebase.database();
-            
-            // Password Protection
-            if (window.location.pathname.includes('admin.html')) {
-                const ADMIN_PASSWORD = "yoursecurepassword123";
-                const storedAuth = sessionStorage.getItem('admin-auth');
-                if (!storedAuth || storedAuth !== ADMIN_PASSWORD) {
-                    const enteredPass = prompt('Enter Admin Password:');
-                    if (enteredPass === ADMIN_PASSWORD) {
-                        sessionStorage.setItem('admin-auth', ADMIN_PASSWORD);
-                    } else {
-                        alert('Incorrect password!');
-                        window.location.href = 'index.html';
-                        return;
-                    }
-                }
-            }
+            const newLogoRef = database.ref("logos").push();
+            await newLogoRef.set(logoData);
+            resolve(newLogoRef.key);
+          } catch (error) {
+            reject(error);
+          }
+        };
+        reader.readAsDataURL(imageFile);
+      });
+    }
 
-            // Mobile menu toggle
-            const menuToggle = document.getElementById('menu-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIcon = document.getElementById('menu-icon');
-            
-            if (menuToggle && mobileMenu && menuIcon) {
-                menuToggle.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    if (mobileMenu.classList.contains('hidden')) {
-                        menuIcon.classList.replace('fa-times', 'fa-bars');
-                    } else {
-                        menuIcon.classList.replace('fa-bars', 'fa-times');
-                    }
-                });
-            }
+    // Handle form submission
+    addLogoForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = addLogoForm.logoTitle.value.trim();
+      const imageFile = addLogoForm.logoImage.files[0];
+      const category = addLogoForm.logoCategory.value;
 
-            // Admin panel functionality
-            const addLogoForm = document.getElementById('addLogoForm');
-            const galleryGrid = document.getElementById('galleryGrid');
+      if (!title || !imageFile || !category) {
+        alert("Please fill all fields.");
+        return;
+      }
 
-            // Load saved logos from localStorage
-            function loadLogos() {
-                database.ref('logos').orderByChild('timestamp').on('value', (snapshot) => {
-                    galleryGrid.innerHTML = '';
-                    const logos = snapshot.val();
-                    
-                    if (!logos) {
-                        console.log('No logos found in database');
-                        return;
-                    }
-                    
-                    Object.keys(logos).forEach(key => {
-                        const logo = logos[key];
-                        const logoItem = document.createElement('div');
-                        logoItem.className = 'bg-gray-800 rounded-lg overflow-hidden shadow-lg';
-                        logoItem.innerHTML = `
-                            <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-xl font-bold mb-2">${logo.title}</h3>
-                                <p class="text-gray-300 mb-2">${logo.category}</p>
-                                <button onclick="removeLogo('${key}')" class="delete-btn bg-red-500 text-white px-3 py-1 rounded">
-                                    Delete
-                                </button>
-                            </div>
-                        `;
-                        galleryGrid.appendChild(logoItem);
-                    });
-                }, (error) => {
-                    console.error('Database read failed:', error);
-                });
-            }
+      try {
+        await saveLogo(title, imageFile, category);
+        alert("Logo added successfully!");
+        addLogoForm.reset();
+      } catch (error) {
+        alert("Error adding logo: " + error.message);
+      }
+    });
 
-            function addLogoToGallery(title, image, category) {
-                const newItem = document.createElement('div');
-                newItem.classList.add('gallery-item', 'bg-gray-800', 'rounded-lg', 'overflow-hidden', 'relative');
-                newItem.innerHTML = `
-                    <img src="${image}" alt="${title}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">${title}</h3>
-                        <p class="text-gray-400">${category}</p>
-                        <button class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-                    </div>
-                `;
-                newItem.querySelector('.delete-btn').onclick = function() {
-                    removeLogo(title);
-                    newItem.remove();
-                };
-                galleryGrid.appendChild(newItem);
-            }
-
-            function saveLogo(title, imageFile, category) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = async function(e) {
-                        try {
-                            const logoData = {
-                                title,
-                                image: e.target.result,
-                                category,
-                                timestamp: firebase.database.ServerValue.TIMESTAMP
-                            };
-                            
-                            const newLogoRef = database.ref('logos').push();
-                            await newLogoRef.set(logoData);
-                            
-                            alert('Logo saved successfully! ID: ' + newLogoRef.key);
-                            loadLogos();
-                            resolve(newLogoRef.key);
-                        } catch (error) {
-                            console.error('Save error:', error);
-                            alert('Failed to save logo');
-                            reject(error);
-                        }
-                    };
-                    reader.readAsDataURL(imageFile);
-                });
-            }
-
-            function removeLogo(key) {
-                database.ref('logos/' + key).remove();
-            }
-
-            if (addLogoForm) {
-                addLogoForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const title = this.logoTitle.value.trim();
-                    const imageFile = this.logoImage.files[0];
-                    const category = this.logoCategory.value;
-                    
-                    if (!title || !imageFile || !category) {
-                        alert('Please fill all fields');
-                        return;
-                    }
-                    
-                    try {
-                        await saveLogo(title, imageFile, category);
-                        this.reset();
-                    } catch (error) {
-                        console.error('Submission error:', error);
-                    }
-                });
-            }
-
-            // Initial render
-            document.addEventListener('DOMContentLoaded', loadLogos);
-        </script>
-    </body>
+    // Load logos on page load
+    document.addEventListener("DOMContentLoaded", loadLogos);
+  </script>
+</body>
 </html>
