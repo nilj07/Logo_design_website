@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,62 +20,39 @@
   </style>
 </head>
 <body class="min-h-screen p-6">
-  <!-- Navigation -->
-  <nav
-    class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg"
-  >
+  <!-- Navbar -->
+  <nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">EliteLogos</a>
+      <a href="index.html" class="text-2xl font-bold">
+        <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+      </a>
       <div class="hidden md:flex space-x-8">
-        <a href="index.html" class="hover:text-gray-300 transition-colors"
-          >Home</a
-        >
-        <a
-          href="gallery.html"
-          class="hover:text-gray-300 transition-colors font-bold"
-          >Gallery</a
-        >
-        <a href="admin.html" class="hover:text-gray-300 transition-colors"
-          >Admin</a
-        >
+        <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+        <a href="gallery.html" class="hover:text-gray-300 transition-colors font-bold">Gallery</a>
+        <a href="services.html" class="hover:text-gray-300 transition-colors">Services</a>
+        <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+        <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+        <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
       </div>
       <button class="md:hidden text-2xl" id="menu-toggle">
         <i class="fas fa-bars" id="menu-icon"></i>
       </button>
     </div>
-
-    <!-- Mobile Menu -->
-    <div
-      class="hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4"
-      id="mobile-menu"
-    >
+    <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
       <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
-        <a
-          href="index.html"
-          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
-          >Home</a
-        >
-        <a
-          href="gallery.html"
-          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
-          >Gallery</a
-        >
-        <a
-          href="admin.html"
-          class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2"
-          >Admin</a
-        >
+        <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+        <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+        <a href="services.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Services</a>
+        <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+        <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+        <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
       </div>
     </div>
   </nav>
 
   <main class="pt-24 container mx-auto px-6">
     <h1 class="text-3xl font-bold mb-6">Logo Gallery</h1>
-    <div
-      id="galleryGrid"
-      class="grid grid-cols-1 md:grid-cols-3 gap-6"
-      aria-live="polite"
-    ></div>
+    <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
   </main>
 
   <footer class="bg-black text-white py-6 mt-12">
@@ -84,10 +61,7 @@
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <script>
     // Mobile menu toggle
     const menuToggle = document.getElementById("menu-toggle");
@@ -105,57 +79,30 @@
       });
     }
 
-    // Firebase config - REPLACE with your actual config
-    const firebaseConfig = {
-      apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
-      authDomain: "thelogobucket-6389b.firebaseapp.com",
-      databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com/",
-      projectId: "thelogobucket-6389b",
-      storageBucket: "thelogobucket-6389b.firebasestorage.app",
-      messagingSenderId: "237466771183",
-      appId: "1:237466771183:web:4984a3b31ff5f266c4451a"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
     const galleryGrid = document.getElementById("galleryGrid");
 
-    // Load logos from Firebase and display
     function loadLogos() {
-      database.ref("logos").orderByChild("timestamp").on(
-        "value",
-        (snapshot) => {
-          galleryGrid.innerHTML = "";
-          const logos = snapshot.val();
-          if (!logos) {
-            galleryGrid.innerHTML = '<p class="text-gray-400">No logos found.</p>';
-            return;
-          }
-          Object.keys(logos).forEach((key) => {
-            const logo = logos[key];
-            const logoItem = document.createElement("div");
-            logoItem.className =
-              "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
-            logoItem.innerHTML = `
-              <img src="${logo.image}" alt="${logo.title}" class="w-full h-48 object-cover" />
-              <div class="p-4">
-                <h3 class="text-xl font-bold mb-2">${logo.title}</h3>
-                <p class="text-gray-300 mb-2">${logo.category}</p>
-              </div>
-            `;
-            galleryGrid.appendChild(logoItem);
-          });
-        },
-        (error) => {
-          console.error("Error loading logos:", error);
-          galleryGrid.innerHTML = '<p class="text-red-500">Failed to load logos.</p>';
-        }
-      );
+      galleryGrid.innerHTML = "";
+      const logos = JSON.parse(localStorage.getItem("elitelogos_logos")) || [];
+      if (logos.length === 0) {
+        galleryGrid.innerHTML = '<p class="text-gray-400">No logos found.</p>';
+        return;
+      }
+      logos.forEach(({ title, image, category }) => {
+        const div = document.createElement("div");
+        div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+        div.innerHTML = `
+          <img src="${image}" alt="${title}" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h3 class="text-xl font-bold mb-2">${title}</h3>
+            <p class="text-gray-300 mb-2">${category}</p>
+          </div>
+        `;
+        galleryGrid.appendChild(div);
+      });
     }
 
-    document.addEventListener("DOMContentLoaded", loadLogos);
+    loadLogos();
   </script>
 </body>
 </html>
