@@ -71,9 +71,9 @@
     </div>
   </nav>
 
-  <main class="pt-24 container mx-auto px-6">
+  <main class="pt-24 container mx-auto px-6 max-w-lg">
     <h1 class="text-3xl font-bold mb-6">Add New Logo</h1>
-    <form id="addLogoForm" class="bg-gray-800 p-6 rounded-lg max-w-lg">
+    <form id="addLogoForm" class="bg-gray-800 p-6 rounded-lg">
       <div class="mb-4">
         <label for="logoTitle" class="block mb-2">Logo Title</label>
         <input
@@ -147,8 +147,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
   <script>
-    // Simple password protection
-    const ADMIN_PASSWORD = "yourpassword123"; // Change this to your desired password
+    // Password protection
+    const ADMIN_PASSWORD = "yourpassword123"; // Change this to your password
 
     if (window.location.pathname.includes("admin.html")) {
       const auth = sessionStorage.getItem("admin-auth");
@@ -181,7 +181,7 @@
 
     // Firebase config - REPLACE with your actual config
     const firebaseConfig = {
-            apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
+      apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
       authDomain: "thelogobucket-6389b.firebaseapp.com",
       databaseURL: "https://thelogobucket-6389b-default-rtdb.firebaseio.com/",
       projectId: "thelogobucket-6389b",
