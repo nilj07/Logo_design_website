@@ -1,4 +1,3 @@
-<!-- admin.html (FINAL VERSION using Firebase Realtime Database) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +14,6 @@
       color: #fff;
       font-family: 'Montserrat', sans-serif;
     }
-    .delete-btn {
-      transition: all 0.2s ease;
-    }
     .delete-btn:hover {
       transform: scale(1.05);
     }
@@ -31,33 +27,42 @@
       </a>
     </div>
   </nav>
+
   <main class="pt-24 container mx-auto px-6 max-w-lg">
     <h1 class="text-3xl font-bold mb-6">Admin Panel - Add New Logo</h1>
     <form id="addLogoForm" class="mb-8">
-      <label class="block mb-2" for="logoTitle">Logo Title</label>
+      <label for="logoTitle" class="block mb-2">Logo Title</label>
       <input type="text" id="logoTitle" required class="w-full p-2 mb-4 rounded text-black" />
-      <label class="block mb-2" for="logoImage">Logo Image</label>
+
+      <label for="logoImage" class="block mb-2">Logo Image</label>
       <input type="file" id="logoImage" accept="image/*" required class="w-full p-2 mb-4 rounded" />
       <small class="text-gray-400 mb-4 block">(Take photo or upload from device)</small>
-      <label class="block mb-2" for="logoCategory">Category</label>
+
+      <label for="logoCategory" class="block mb-2">Category</label>
       <select id="logoCategory" required class="w-full p-2 mb-4 rounded text-black">
         <option value="" disabled selected>Select category</option>
         <option value="Corporate">Corporate</option>
         <option value="Personal">Personal</option>
         <option value="Retail">Retail</option>
       </select>
-      <button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">Add Logo</button>
+
+      <button type="submit" id="submitBtn" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">
+        Add Logo
+      </button>
     </form>
+
     <section>
       <h2 class="text-2xl font-bold mb-4">Gallery Preview</h2>
-      <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-live="polite"></div>
+      <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
     </section>
   </main>
+
   <footer class="bg-black text-white py-6 mt-12">
     <div class="container mx-auto text-center">
       <p>&copy; 2023 EliteLogos. All rights reserved.</p>
     </div>
   </footer>
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyB3yIzrGdlTMrWf49Ql0pV7-HzEIG_yVxM",
@@ -69,7 +74,6 @@
       appId: "1:237466771183:web:4984a3b31ff5f266c4451a",
       measurementId: "G-L9FHS6DB01"
     };
-
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
@@ -137,8 +141,8 @@
         const imageBase64 = await fileToBase64(imageFile);
         const newLogoRef = database.ref("logos").push();
         await newLogoRef.set({ title, image: imageBase64, category });
-        loadLogos();
         addLogoForm.reset();
+        loadLogos();
         alert("Logo added successfully!");
       } catch (error) {
         alert("Error reading image file.");
