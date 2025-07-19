@@ -285,17 +285,44 @@ function populateRelatedLogos() {
 }
 
 // Main function to render the gallery grid
+// =========================================================
+// REPLACE your old renderGallery function with this one
+// =========================================================
 function renderGallery(logos, selectedCategory) {
-    galleryGrid.innerHTML = "";
+    galleryGrid.innerHTML = ""; // Clear the grid
     let logosFound = false;
     for (const key in logos) {
         if (selectedCategory === "all" || logos[key].category === selectedCategory) {
             logosFound = true;
-            const { title, imageUrl } = logos[key];
+            const { title, imageUrl, category, price = 'N/A' } = logos[key];
+
+            // --- Watermark logic (as before) ---
+            const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
+            const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
+
             const div = document.createElement("div");
-            div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer";
-            div.setAttribute('data-logo-key', key); // Add key for identification
-            div.innerHTML = `<img src="${imageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />`;
+            // Add a data-logo-key to the main card for easy identification
+            div.setAttribute('data-logo-key', key); 
+            div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col cursor-pointer";
+
+            // --- This is the new innerHTML for the full card ---
+            div.innerHTML = `
+                <!-- The image is now the primary click target -->
+                <div class="image-container flex-shrink-0">
+                    <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
+                </div>
+                <!-- Details section -->
+                <div class="p-4 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold mb-2">${title}</h3>
+                    <p class="text-gray-400 mb-2">${price}</p>
+                    <div class="mt-auto pt-2">
+                        <!-- The "Shop Now" button is now the secondary click target -->
+                        <div class="shop-now-trigger w-full bg-yellow-400 text-black text-center font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors">
+                            Shop Now
+                        </div>
+                    </div>
+                </div>
+            `;
             galleryGrid.appendChild(div);
         }
     }
@@ -328,11 +355,20 @@ categoryButtons.forEach(button => {
 });
 
 // Listener for clicks on the main gallery grid (to open modal)
+// =========================================================
+// REPLACE your old galleryGrid event listener with this one
+// =========================================================
 galleryGrid.addEventListener('click', function(e) {
+    // Use .closest() to find the parent gallery card that was clicked
     const card = e.target.closest('.gallery-item');
+    
+    // If a card was clicked (not the gap between cards)
     if (card) {
         const logoKey = card.dataset.logoKey;
-        openModal(logoKey, allLogosData);
+        // Check if the logo key exists before trying to open the modal
+        if (logoKey && allLogosData[logoKey]) {
+            openModal(logoKey, allLogosData);
+        }
     }
 });
 
