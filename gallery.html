@@ -255,7 +255,6 @@ function renderGallery(logosToRender, selectedCategory) {
     for (const key in logosToRender) {
         const logo = logosToRender[key];
         
-        // Safety check to prevent bad data from breaking the page
         if (logo && logo.imageUrl && (selectedCategory === "all" || logo.category === selectedCategory)) {
             logosFound = true;
             const { title, imageUrl, category, price = 'N/A' } = logo;
@@ -292,6 +291,7 @@ function renderGallery(logosToRender, selectedCategory) {
         galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in this category.</p>`;
     }
 }
+
 
 
 // --- SECTION 3: EVENT LISTENERS & INITIALIZATION ---
