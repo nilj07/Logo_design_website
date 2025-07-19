@@ -172,6 +172,30 @@ galleryGrid.addEventListener('click', function(e) {
     }
 });
 
+    // Get references to page elements
+const galleryGrid = document.getElementById("galleryGrid");
+const categoryButtons = document.querySelectorAll(".category-button");
+
+// Main function to load and display logos
+function loadLogosFromFirebase(selectedCategory) {
+    logosRef.on('value', (snapshot) => {
+        galleryGrid.innerHTML = "";
+        if (!snapshot.exists()) {
+            galleryGrid.innerHTML = '<p class="text-gray-400 col-span-full">The gallery is currently empty.</p>';
+            return;
+        }
+
+        const logosData = snapshot.val();
+        let logosFound = false;
+
+        for (const key in logosData) {
+            const { title, imageUrl, category, price = 'Price on request' } = logosData[key];
+
+            // Filter by category
+            if (selectedCategory === "all" || category === selectedCategory) {
+                logosFound = true;
+
+
 // Event listener for category buttons
 categoryButtons.forEach(button => {
     button.addEventListener("click", () => {
