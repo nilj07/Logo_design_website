@@ -8,31 +8,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
-        :root {
-            --primary: #000000;
-            --secondary: #222222;
-            --accent: #ffffff;
-            --highlight: #9d9d9d;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
         body {
-            background-color: var(--primary);
-            color: var(--accent);
+            background-color: #000;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
+        /* Make sure form input text is readable */
         input, textarea, select {
-            color: #000 !important;
+            color: #1a202c !important; /* A dark gray color */
         }
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Navigation -->
-    <nav class="navbar bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
+    
+    <!-- ============================================= -->
+    <!-- THIS IS THE CORRECT, COMPLETE NAVIGATION BAR -->
+    <!-- ============================================= -->
+    <nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold">
                 <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
@@ -41,53 +34,78 @@
                 <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
                 <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
                 <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
-                <a href="contact.html" class="hover:text-gray-300 transition-colors font-bold">Contact</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors font-bold">Contact</a> <!-- Bold for current page -->
+                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
             </div>
             <button class="md:hidden text-2xl" id="menu-toggle">
-                <i class="fas fa-bars"></i>
+                <i class="fas fa-bars" id="menu-icon"></i>
             </button>
+        </div>
+        <!-- The mobile menu that was missing -->
+        <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
+            <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
+                <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2 font-bold">Contact</a> <!-- Bold for current page -->
+                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+            </div>
         </div>
     </nav>
 
-    <section class="py-20 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <h1 class="text-3xl font-bold mb-6">Contact Us</h1>
-            <form id="contactForm" class="bg-gray-800 p-6 rounded-lg">
-                <div class="form-group mb-4">
-                    <label for="name" class="block mb-2">Name</label>
-                    <input type="text" id="name" name="name" required class="w-full p-2 rounded">
+    <!-- Contact Section -->
+    <section class="pt-24 pb-20 bg-gray-900">
+        <div class="container mx-auto px-6 max-w-2xl">
+            <h1 class="text-4xl font-bold mb-4 text-center">Get In Touch</h1>
+            <p class="text-lg text-gray-400 mb-8 text-center">Have a question or want to start a project? Fill out the form below.</p>
+            
+            <!-- Your original form, unchanged -->
+            <form id="contactForm" class="bg-gray-800 p-8 rounded-lg shadow-xl">
+                <div class="form-group mb-6">
+                    <label for="name" class="block mb-2 text-lg">Name</label>
+                    <input type="text" id="name" name="name" required class="w-full p-3 rounded bg-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 </div>
-                <div class="form-group mb-4">
-                    <label for="email" class="block mb-2">Email</label>
-                    <input type="email" id="email" name="email" required class="w-full p-2 rounded">
+                <div class="form-group mb-6">
+                    <label for="email" class="block mb-2 text-lg">Email</label>
+                    <input type="email" id="email" name="email" required class="w-full p-3 rounded bg-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 </div>
-                <div class="form-group mb-4">
-                    <label for="message" class="block mb-2">Message</label>
-                    <textarea id="message" name="message" required class="w-full p-2 rounded" rows="4"></textarea>
+                <div class="form-group mb-6">
+                    <label for="message" class="block mb-2 text-lg">Message</label>
+                    <textarea id="message" name="message" required class="w-full p-3 rounded bg-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400" rows="5"></textarea>
                 </div>
-                <button type="submit" class="bg-gold text-black px-4 py-2 rounded">Send Message</button>
+                <button type="submit" class="w-full bg-yellow-400 text-black font-bold text-lg px-4 py-3 rounded hover:bg-yellow-500 transition-colors">Send Message</button>
             </form>
         </div>
     </section>
 
-    <footer class="bg-black text-white py-6">
+    <footer class="bg-black text-white py-6 mt-12">
         <div class="container mx-auto text-center">
-            <p>&copy; 2023 EliteLogos. All rights reserved.</p>
+            <p>© 2023 EliteLogos. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- ========================================================= -->
+    <!-- ALL JAVASCRIPT LOGIC - COMBINED AND PLACED AT THE BOTTOM -->
+    <!-- ========================================================= -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
+        // --- Logic for Mobile Menu ---
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuIcon = document.getElementById("menu-icon");
 
-        if (menuToggle && mobileMenu) {
-            menuToggle.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+        if (menuToggle && mobileMenu && menuIcon) {
+            menuToggle.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+                if (mobileMenu.classList.contains("hidden")) {
+                    menuIcon.classList.replace("fa-times", "fa-bars");
+                } else {
+                    menuIcon.classList.replace("fa-bars", "fa-times");
+                }
             });
         }
 
-        // WhatsApp Message Sending
+        // --- Logic for WhatsApp Message Sending ---
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
@@ -100,35 +118,12 @@
                 const whatsappMessage = `New Message from EliteLogos Website:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
                 
                 const encodedMessage = encodeURIComponent(whatsappMessage);
+                // Your WhatsApp number is included here
                 window.open(`https://wa.me/919730094145?text=${encodedMessage}`, '_blank');
                 
                 this.reset();
             });
         }
     </script>
-    <!-- =================================================== -->
-<!-- PASTE THIS ENTIRE BLOCK ON ALL YOUR OTHER HTML PAGES -->
-<!-- =================================================== -->
-
-<!-- Font Awesome for the menu icons -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
-<!-- JavaScript for the Mobile Menu Toggle -->
-<script>
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuIcon = document.getElementById("menu-icon");
-
-    if (menuToggle && mobileMenu && menuIcon) {
-        menuToggle.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-            if (mobileMenu.classList.contains("hidden")) {
-                menuIcon.classList.replace("fa-times", "fa-bars");
-            } else {
-                menuIcon.classList.replace("fa-bars", "fa-times");
-            }
-        });
-    }
-</script>
 </body>
 </html>
