@@ -106,5 +106,29 @@
             });
         }
     </script>
+    <!-- =================================================== -->
+<!-- PASTE THIS ENTIRE BLOCK ON ALL YOUR OTHER HTML PAGES -->
+<!-- =================================================== -->
+
+<!-- Font Awesome for the menu icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+<!-- JavaScript for the Mobile Menu Toggle -->
+<script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+
+    if (menuToggle && mobileMenu && menuIcon) {
+        menuToggle.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+            if (mobileMenu.classList.contains("hidden")) {
+                menuIcon.classList.replace("fa-times", "fa-bars");
+            } else {
+                menuIcon.classList.replace("fa-bars", "fa-times");
+            }
+        });
+    }
+</script>
 </body>
 </html>
