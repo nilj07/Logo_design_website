@@ -105,7 +105,7 @@ function loadLogosFromFirebase(selectedCategory) {
         const logosData = snapshot.val();
 
         for (const key in logosData) {
-            const { title, imageUrl, category } = logosData[key];
+            const { title, imageUrl, category, price = 'Price on request' } = logosData[key]; 
             if (selectedCategory === "all" || category === selectedCategory) {
                 const div = document.createElement("div");
                 div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
@@ -114,6 +114,15 @@ function loadLogosFromFirebase(selectedCategory) {
                     <div class="p-4">
                         <h3 class="text-xl font-bold mb-2">${title}</h3>
                         <p class="text-gray-300 mb-2">${category}</p>
+                        <p class="text-lg font-semibold text-yellow-400 mb-4">${price}</p>
+                        <div class="mt-auto">
+                <button class="shop-now-btn w-full bg-yellow-400 text-black font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors"
+                        data-title="${title}"
+                        data-price="${price}"
+                        data-image-url="${imageUrl}">
+                    Shop Now
+                </button>
+            </div>
                     </div>
                 `;
                 galleryGrid.appendChild(div);
@@ -121,6 +130,30 @@ function loadLogosFromFirebase(selectedCategory) {
         }
     });
 }
+
+// --- WhatsApp Button Logic ---
+galleryGrid.addEventListener('click', function(e) {
+    // Check if a "Shop Now" button was clicked
+    if (e.target.classList.contains('shop-now-btn')) {
+        const button = e.target;
+        const title = button.dataset.title;
+        const price = button.dataset.price;
+        const imageUrl = button.dataset.imageUrl;
+        
+        // Your WhatsApp number
+        const whatsappNumber = "919730094145"; 
+
+        // Create the message
+        const message = `Hi! I'm interested in buying this logo:\n\n*Logo Name:* ${title}\n*Price:* ${price}\n\nHere is the image for reference:\n${imageUrl}`;
+
+        // Encode the message for a URL
+        const encodedMessage = encodeURIComponent(message);
+
+        // Create the WhatsApp link and open it in a new tab
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
+    }
+});
 
 // Event listener for category buttons
 categoryButtons.forEach(button => {
