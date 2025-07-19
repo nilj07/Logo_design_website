@@ -261,8 +261,9 @@ function renderGallery(logosToRender, selectedCategory) {
             
             // Log the image URL for debugging
             console.log(`Rendering logo: ${title}, Image URL: ${imageUrl}`);
-            
-            const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
+            //LOGOBUCKET_bi96dx
+            //l_LOGOBUCKET_tdk1fj
+            const watermarkTransformation = "l_LOGOBUCKET_bi96dx,o_60,g_center";
             const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
             
             const div = document.createElement("div");
