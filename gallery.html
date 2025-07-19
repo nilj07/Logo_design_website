@@ -249,26 +249,37 @@ function populateRelatedLogos() {
 }
 
 // THIS IS THE SINGLE, CORRECT RENDER GALLERY FUNCTION
+// =========================================================
+// REPLACE your old renderGallery function with this one
+// =========================================================
 function renderGallery(logosToRender, selectedCategory) {
     galleryGrid.innerHTML = "";
     let logosFound = false;
     for (const key in logosToRender) {
-        const logo = logosToRender[key]; // Use a variable for clarity
-        if (selectedCategory === "all" || logo.category === selectedCategory) {
+        const logo = logosToRender[key];
+        
+        // --- SAFETY CHECK ---
+        // Only proceed if the logo object exists and has a valid imageUrl property
+        if (logo && logo.imageUrl && (selectedCategory === "all" || logo.category === selectedCategory)) {
             logosFound = true;
-            const { title, imageUrl, price = 'N/A' } = logo;
+            const { title, imageUrl, category, price = 'N/A' } = logo;
+            
+            // --- Watermark Logic ---
             const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
             const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
+            
             const div = document.createElement("div");
             div.setAttribute('data-logo-key', key);
             div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col cursor-pointer";
+            
             div.innerHTML = `
                 <div class="image-container flex-shrink-0">
                     <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
                 </div>
                 <div class="p-4 flex-grow flex flex-col">
                     <h3 class="text-xl font-bold mb-2">${title}</h3>
-                    <p class="text-gray-400 mb-2">${price}</p>
+                    <p class="text-sm text-gray-400 mb-2">${category}</p>
+                    <p class="text-lg font-semibold text-yellow-400 mb-4">price:${price}/-</p>
                     <div class="mt-auto pt-2">
                         <div class="shop-now-trigger w-full bg-yellow-400 text-black text-center font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors">
                             Shop Now
