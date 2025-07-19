@@ -136,6 +136,21 @@ categoryButtons.forEach(button => {
 
 // Start by loading all logos
 loadLogosFromFirebase("all");
+// --- Mobile Menu Toggle ---
+const menuToggle = document.getElementById("menu-toggle");
+const mobileMenu = document.getElementById("mobile-menu");
+const menuIcon = document.getElementById("menu-icon");
+
+if (menuToggle && mobileMenu && menuIcon) {
+    menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        if (mobileMenu.classList.contains("hidden")) {
+            menuIcon.classList.replace("fa-times", "fa-bars");
+        } else {
+            menuIcon.classList.replace("fa-bars", "fa-times");
+        }
+    });
+}
 </script>
 </body>
 </html>
