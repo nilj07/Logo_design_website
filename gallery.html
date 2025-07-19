@@ -296,27 +296,23 @@ function renderGallery(logos, selectedCategory) {
             logosFound = true;
             const { title, imageUrl, category, price = 'N/A' } = logos[key];
 
-            // --- Watermark logic (as before) ---
+            // --- Watermark logic ---
             const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
             const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
 
             const div = document.createElement("div");
-            // Add a data-logo-key to the main card for easy identification
             div.setAttribute('data-logo-key', key); 
             div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col cursor-pointer";
 
-            // --- This is the new innerHTML for the full card ---
+            // --- Corrected innerHTML with the image src ---
             div.innerHTML = `
-                <!-- The image is now the primary click target -->
                 <div class="image-container flex-shrink-0">
                     <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
                 </div>
-                <!-- Details section -->
                 <div class="p-4 flex-grow flex flex-col">
                     <h3 class="text-xl font-bold mb-2">${title}</h3>
                     <p class="text-gray-400 mb-2">${price}</p>
                     <div class="mt-auto pt-2">
-                        <!-- The "Shop Now" button is now the secondary click target -->
                         <div class="shop-now-trigger w-full bg-yellow-400 text-black text-center font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors">
                             Shop Now
                         </div>
