@@ -252,25 +252,32 @@ function populateRelatedLogos() {
 // =========================================================
 // REPLACE your old renderGallery function with this one
 // =========================================================
+// =========================================================
+// REPLACE your old renderGallery function with this one
+// =========================================================
 function renderGallery(logosToRender, selectedCategory) {
     galleryGrid.innerHTML = "";
     let logosFound = false;
+
     for (const key in logosToRender) {
-        // THE FIX IS HERE: We correctly use "logosToRender[key]"
         const logo = logosToRender[key];
-        
-        // This is the safety check to prevent bad data from breaking the page
-        if (logo && logo.imageUrl && (selectedCategory === "all" || logo.category === selectedCategory)) {
-            logosFound = true;
-            const { title, imageUrl, category, price = 'N/A' } = logo;
+
+        // --- THIS IS THE NEW, CRITICAL SAFETY CHECK ---
+        // It checks if a logo exists, if its imageUrl is a string, and if it's a cloudinary link.
+        if (logo && typeof logo.imageUrl === 'string' && logo.imageUrl.includes('cloudinary') && (selectedCategory === "all" || logo.category === selectedCategory)) {
             
+            logosFound = true; // We found a valid logo to show
+            const { title, imageUrl, category, price = 'N/A' } = logo;
+
+            // Watermark logic (this is now safe to run)
             const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
             const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
-            
+
             const div = document.createElement("div");
             div.setAttribute('data-logo-key', key);
             div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col cursor-pointer";
-            
+
+            // Your innerHTML is correct and will now work
             div.innerHTML = `
                 <div class="image-container flex-shrink-0">
                     <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
@@ -289,8 +296,9 @@ function renderGallery(logosToRender, selectedCategory) {
             galleryGrid.appendChild(div);
         }
     }
+
     if (!logosFound && selectedCategory !== "all") {
-        galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in this category.</p>`;
+        galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in the '${selectedCategory}' category.</p>`;
     }
 }
 
