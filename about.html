@@ -88,23 +88,16 @@
 <!-- =================================================== -->
 
 <!-- Font Awesome for the menu icons -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
-<!-- JavaScript for the Mobile Menu Toggle -->
+    <!-- This should be at the bottom of index.html and about.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 <script>
     const menuToggle = document.getElementById("menu-toggle");
     const mobileMenu = document.getElementById("mobile-menu");
     const menuIcon = document.getElementById("menu-icon");
 
     if (menuToggle && mobileMenu && menuIcon) {
-        menuToggle.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-            if (mobileMenu.classList.contains("hidden")) {
-                menuIcon.classList.replace("fa-times", "fa-bars");
-            } else {
-                menuIcon.classList.replace("fa-bars", "fa-times");
-            }
-        });
+        // ... the rest of the script ...
     }
 </script>
 </body>
