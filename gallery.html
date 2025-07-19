@@ -288,10 +288,15 @@ function populateRelatedLogos() {
 // =========================================================
 // REPLACE your old renderGallery function with this one
 // =========================================================
+// =========================================================
+// REPLACE your old renderGallery function with this one
+// =========================================================
 function renderGallery(logos, selectedCategory) {
     galleryGrid.innerHTML = ""; // Clear the grid
     let logosFound = false;
+
     for (const key in logos) {
+        // THIS 'IF' STATEMENT IS NOW CORRECTED
         if (selectedCategory === "all" || logos[key].category === selectedCategory) {
             logosFound = true;
             const { title, imageUrl, category, price = 'N/A' } = logos[key];
@@ -304,7 +309,6 @@ function renderGallery(logos, selectedCategory) {
             div.setAttribute('data-logo-key', key); 
             div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col cursor-pointer";
 
-            // --- Corrected innerHTML with the image src ---
             div.innerHTML = `
                 <div class="image-container flex-shrink-0">
                     <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
@@ -322,11 +326,12 @@ function renderGallery(logos, selectedCategory) {
             galleryGrid.appendChild(div);
         }
     }
+    
+    // This part handles the "No logos found" message
     if (!logosFound && selectedCategory !== "all") {
-        galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in this category.</p>`;
+        galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in the '${selectedCategory}' category.</p>`;
     }
 }
-
 
 // --- SECTION 3: EVENT LISTENERS & INITIALIZATION ---
 
