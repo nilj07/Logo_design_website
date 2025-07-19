@@ -94,43 +94,60 @@ const galleryGrid = document.getElementById("galleryGrid");
 const categoryButtons = document.querySelectorAll(".category-button");
 
 // Load logos from Firebase
+// This is the new, corrected function for loading and watermarking logos
 function loadLogosFromFirebase(selectedCategory) {
     logosRef.on('value', (snapshot) => {
         galleryGrid.innerHTML = "";
         if (!snapshot.exists()) {
-            galleryGrid.innerHTML = '<p class="text-gray-400 col-span-3">The gallery is currently empty. Check back soon!</p>';
+            galleryGrid.innerHTML = '<p class="text-gray-400 col-span-full">The gallery is currently empty.</p>';
             return;
         }
 
         const logosData = snapshot.val();
+        let logosFound = false;
 
         for (const key in logosData) {
-            const { title, imageUrl, category, price = 'Price on request' } = logosData[key]; 
+            const { title, imageUrl, category, price = 'Price on request' } = logosData[key];
+
             if (selectedCategory === "all" || category === selectedCategory) {
+                logosFound = true;
+
+                // 1. Define the watermark transformation using your Public ID
+                const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
+
+                // 2. Create the new watermarked URL
+                const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
+
+                // 3. Create the div and its HTML content
                 const div = document.createElement("div");
-                div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+                div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col";
+                
+                // 4. Use the NEW watermarked URL for the image and button
                 div.innerHTML = `
-                    <img src="${imageUrl}" alt="${title}" class="w-full aspect-square object-cover" />
-                    <div class="p-4">
+                    <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
+                    <div class="p-4 flex-grow flex flex-col">
                         <h3 class="text-xl font-bold mb-2">${title}</h3>
                         <p class="text-gray-300 mb-2">${category}</p>
                         <p class="text-lg font-semibold text-yellow-400 mb-4">${price}</p>
                         <div class="mt-auto">
-                <button class="shop-now-btn w-full bg-yellow-400 text-black font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors"
-                        data-title="${title}"
-                        data-price="${price}"
-                        data-image-url="${imageUrl}">
-                    Shop Now
-                </button>
-            </div>
+                            <button class="shop-now-btn w-full bg-yellow-400 text-black font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors"
+                                    data-title="${title}"
+                                    data-price="${price}"
+                                    data-image-url="${watermarkedImageUrl}">
+                                Shop Now
+                            </button>
+                        </div>
                     </div>
                 `;
                 galleryGrid.appendChild(div);
             }
         }
+
+        if (!logosFound && selectedCategory !== "all") {
+            galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in the '${selectedCategory}' category.</p>`;
+        }
     });
 }
-
 // --- WhatsApp Button Logic ---
 galleryGrid.addEventListener('click', function(e) {
     // Check if a "Shop Now" button was clicked
