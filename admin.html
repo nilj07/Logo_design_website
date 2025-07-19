@@ -72,6 +72,8 @@ transform: scale(1.05);
     <option value="Retail">Retail</option>
     <option value="PNG">PNG</option>
   </select>
+  <label class="block mb-2" for="logoPrice">Price (e.g., $49 or ₹2999)</label>
+  <input type="text" id="logoPrice" required class="w-full p-2 mb-4 rounded text-black" />
 
   <button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-500">
     Add Logo
@@ -181,9 +183,10 @@ addLogoForm.addEventListener("submit", async (e) => {
     const title = document.getElementById("logoTitle").value.trim();
     const imageFile = document.getElementById("logoImage").files[0];
     const category = document.getElementById("logoCategory").value;
+    const price = document.getElementById("logoPrice").value.trim();
 
-    if (!title || !imageFile || !category) {
-        alert("Please fill all fields.");
+    if (!title || !imageFile || !category || !price) {
+        alert("Please fill all fields, including price.");
         return;
     }
     
@@ -208,12 +211,14 @@ addLogoForm.addEventListener("submit", async (e) => {
 
         const data = await response.json();
         const imageUrl = data.secure_url; // Get the URL from Cloudinary
+        const imageUrl = data.secure_url;
 
         // 2. Save the URL to Firebase Realtime Database
         await logosRef.push({
             title: title,
             imageUrl: imageUrl, // Store the Cloudinary URL
-            category: category
+            category: category,
+            price: price
         });
         
         addLogoForm.reset();
