@@ -97,23 +97,25 @@ if (menuToggle && mobileMenu && menuIcon) {
 
 const galleryGrid = document.getElementById("galleryGrid");
 
+// This is the correct version of the function
 function loadLogosFromFirebase() {
-    // Listen for data changes at our 'logos' reference
     logosRef.on('value', (snapshot) => {
-        galleryGrid.innerHTML = ""; // Clear the grid
+        galleryGrid.innerHTML = "";
         if (!snapshot.exists()) {
             galleryGrid.innerHTML = '<p class="text-gray-400 col-span-3">The gallery is currently empty. Check back soon!</p>';
             return;
         }
 
+        // THIS IS THE LINE THAT WAS LIKELY MISSING
         const logosData = snapshot.val();
-        // Loop through all logos from the database
+
+        // This loop will now work correctly
         for (const key in logosData) {
-            const { title, image, category } = logosData[key];
+            const { title, imageUrl, category } = logosData[key];
             const div = document.createElement("div");
             div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
             div.innerHTML = `
-                <img src="${image}" alt="${title}" class="w-full h-48 object-cover" />
+                <img src="${imageUrl}" alt="${title}" class="w-full h-48 object-cover" />
                 <div class="p-4">
                     <h3 class="text-xl font-bold mb-2">${title}</h3>
                     <p class="text-gray-300 mb-2">${category}</p>
