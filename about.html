@@ -29,22 +29,34 @@
 </head>
 <body class="min-h-screen">
     <!-- Navigation -->
-    <nav class="navbar bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold">
-                <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
-            </a>
-            <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
-                <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
-                <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
-                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
-            </div>
-            <button class="md:hidden text-2xl" id="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
+<!-- Correct Navbar block from gallery.html -->
+<nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-bold">
+            <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+        </a>
+        <div class="hidden md:flex space-x-8">
+            <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+            <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
+            <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+            <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+            <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
         </div>
-    </nav>
+        <button class="md:hidden text-2xl" id="menu-toggle">
+            <i class="fas fa-bars" id="menu-icon"></i> <!-- It has the ID -->
+        </button>
+    </div>
+    <!-- This is the missing mobile menu div -->
+    <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
+        <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
+            <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+            <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+            <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+            <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+            <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+        </div>
+    </div>
+</nav>
 
     <!-- About Section -->
     <section class="py-20 bg-gray-900">
