@@ -180,7 +180,6 @@ const COUPONS = { "SAVE10": 10, "ELITE20": 20 };
 function toggleMobileMenu() {
     if (menuToggle && mobileMenu && menuIcon) {
         mobileMenu.classList.toggle("hidden");
-        // Use classList.toggle for cleaner icon switching
         menuIcon.classList.toggle("fa-bars");
         menuIcon.classList.toggle("fa-times");
     }
@@ -250,11 +249,11 @@ function populateRelatedLogos() {
 }
 
 // THIS IS THE SINGLE, CORRECT RENDER GALLERY FUNCTION
-function renderGallery(selectedCategory) {
+function renderGallery(logosToRender, selectedCategory) {
     galleryGrid.innerHTML = "";
     let logosFound = false;
-    for (const key in allLogosData) {
-        const logo = allLogosData[key]; // Use a variable for clarity
+    for (const key in logosToRender) {
+        const logo = logosToRender[key]; // Use a variable for clarity
         if (selectedCategory === "all" || logo.category === selectedCategory) {
             logosFound = true;
             const { title, imageUrl, price = 'N/A' } = logo;
@@ -295,7 +294,9 @@ logosRef.on('value', (snapshot) => {
         // After fetching data, find the currently active category and re-render
         const activeCategoryButton = document.querySelector(".category-button.active");
         const currentCategory = activeCategoryButton ? activeCategoryButton.dataset.category : "all";
-        renderGallery(currentCategory);
+        
+        // THE FIX IS HERE: We now pass the logo data to the function
+        renderGallery(allLogosData, currentCategory);
     } else {
         galleryGrid.innerHTML = '<p class="text-gray-400 col-span-full">The gallery is currently empty.</p>';
     }
@@ -307,7 +308,9 @@ categoryButtons.forEach(button => {
         categoryButtons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
         const selectedCategory = button.getAttribute("data-category");
-        renderGallery(selectedCategory);
+        
+        // THE FIX IS HERE: We now pass the logo data to the function
+        renderGallery(allLogosData, selectedCategory);
     });
 });
 
