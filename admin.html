@@ -157,20 +157,38 @@ const galleryGrid = document.getElementById("galleryGrid");
 const submitButton = addLogoForm.querySelector('button[type="submit"]');
 
 // Listen for logo changes from Firebase DB and render the preview (unchanged)
+// THIS IS THE NEW, CORRECTED FUNCTION FOR THE ADMIN PREVIEW
 function listenForLogoChanges() {
     logosRef.on('value', (snapshot) => {
-        galleryGrid.innerHTML = "";
-        if (!snapshot.exists()) { /* ... */ return; }
+        galleryGrid.innerHTML = ""; // Clear the grid
+        if (!snapshot.exists()) {
+            galleryGrid.innerHTML = '<p class="text-gray-400 col-span-full">No logos added yet.</p>';
+            return;
+        }
+
         const logosData = snapshot.val();
         for (const key in logosData) {
-            const { title, imageUrl, category } = logosData[key];
+            // Get all the data, including price
+            const { title, imageUrl, category, price = 'N/A' } = logosData[key];
+            
             const div = document.createElement("div");
+            // Use the same layout classes as your gallery.html for a perfect match
+            div.className = "bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col";
+            
+            // Use the new, correct HTML structure for the card
             div.innerHTML = `
-                <img src="${imageUrl}" alt="${title}" class="w-full h-48 object-cover" />
-                <div class="p-4">
-                    <h3>${title}</h3><p>${category}</p>
-                    <button data-key="${key}" data-url="${imageUrl}" class="delete-btn ...">Delete</button>
-                </div>`;
+                <img src="${imageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
+                <div class="p-4 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold mb-2">${title}</h3>
+                    <p class="text-gray-400 mb-2">${category}</p>
+                    <p class="text-lg font-semibold text-yellow-400 mb-4">${price}</p>
+                    <div class="mt-auto">
+                        <button data-key="${key}" class="delete-btn w-full bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 transition-colors">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `;
             galleryGrid.appendChild(div);
         }
     });
