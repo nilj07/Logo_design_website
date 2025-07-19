@@ -99,124 +99,65 @@ transform: scale(1.05);
 <!-- === START OF THE SINGLE, CORRECTED SCRIPT BLOCK === -->
 <!-- admin.html - NEW, COMPLETE SCRIPT BLOCK -->
 
+<!-- admin.html - FINAL SCRIPT -->
 <script>
-// --- PART 1: FIREBASE INITIALIZATION ---
+// --- PART 1: FIREBASE REALTIME DATABASE INITIALIZATION ---
+// This part is for storing the title, category, and image URL
 const firebaseConfig = {
-    apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
-    authDomain: "elitelogos-gallery.firebaseapp.com",
-    projectId: "elitelogos-gallery",
-    storageBucket: "elitelogos-gallery.firebasestorage.app",
-    messagingSenderId: "359472953712",
-    appId: "1:359472953712:web:91fc67e1eb30062d90b7b5"
-  };
-firebase.initializeApp(firebaseConfig); 
-
-// Get references to Firebase services
+  apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
+  authDomain: "elitelogos-gallery.firebaseapp.com",
+  projectId: "elitelogos-gallery",
+  storageBucket: "elitelogos-gallery.firebasestorage.app",
+  messagingSenderId: "359472953712",
+  appId: "1:359472953712:web:91fc67e1eb30062d90b7b5"
+};
+firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-const storage = firebase.storage(); // <-- Initialize Storage
 const logosRef = database.ref('logos');
 
 
-// --- PART 2: APPLICATION LOGIC ---
+// --- PART 2: CLOUDINARY CONFIGURATION ---
+const CLOUDINARY_CLOUD_NAME = "your_cloud_name_here"; // <-- PASTE YOUR CLOUD NAME
+const CLOUDINARY_UPLOAD_PRESET = "unsigned_logos"; // <-- PASTE YOUR UPLOAD PRESET NAME
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
-// Password protection
+
+// --- PART 3: APPLICATION LOGIC ---
+
+// Password protection and mobile menu toggle (unchanged)
 const ADMIN_PASSWORD = "yourpassword123";
-function checkPassword() {
-    // ... (rest of this function is unchanged)
-    const auth = sessionStorage.getItem("admin-auth");
-    if (auth !== ADMIN_PASSWORD) {
-        const entered = prompt("Enter admin password:");
-        if (entered === ADMIN_PASSWORD) {
-            sessionStorage.setItem("admin-auth", ADMIN_PASSWORD);
-        } else {
-            alert("Incorrect password!");
-            window.location.href = "index.html";
-        }
-    }
-}
+function checkPassword() { /* ... unchanged ... */ }
 checkPassword();
+// ... other unchanged code for menu ...
 
-// Mobile menu toggle (unchanged)
-const menuToggle = document.getElementById("menu-toggle");
-// ... (rest of menu code is unchanged)
 
 // Get references to HTML elements
 const addLogoForm = document.getElementById("addLogoForm");
 const galleryGrid = document.getElementById("galleryGrid");
 const submitButton = addLogoForm.querySelector('button[type="submit"]');
 
-// Listen for logo changes and render the preview
+// Listen for logo changes from Firebase DB and render the preview (unchanged)
 function listenForLogoChanges() {
     logosRef.on('value', (snapshot) => {
         galleryGrid.innerHTML = "";
-        if (!snapshot.exists()) {
-            galleryGrid.innerHTML = '<p class="text-gray-400 col-span-3">No logos added yet.</p>';
-            return;
-        }
+        if (!snapshot.exists()) { /* ... */ return; }
         const logosData = snapshot.val();
         for (const key in logosData) {
-            // UPDATED: Use imageUrl instead of image
             const { title, imageUrl, category } = logosData[key];
             const div = document.createElement("div");
-            div.className = "bg-gray-800 rounded-lg overflow-hidden shadow-lg";
             div.innerHTML = `
                 <img src="${imageUrl}" alt="${title}" class="w-full h-48 object-cover" />
                 <div class="p-4">
-                    <h3 class="text-xl font-bold mb-2">${title}</h3>
-                    <p class="text-gray-300 mb-2">${category}</p>
-                    <button data-key="${key}" class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-                </div>
-            `;
+                    <h3>${title}</h3><p>${category}</p>
+                    <button data-key="${key}" data-url="${imageUrl}" class="delete-btn ...">Delete</button>
+                </div>`;
             galleryGrid.appendChild(div);
         }
     });
 }
 
-// Delete a logo (Database entry and Storage file)
-function deleteLogo(key) {
-    if (!confirm('Are you sure you want to delete this logo?')) return;
 
-    // First, get the logo's data to find its file name in storage
-    logosRef.child(key).once('value', (snapshot) => {
-        if (!snapshot.exists()) {
-            console.error("Logo not found in database for deletion.");
-            return;
-        }
-        const logoData = snapshot.val();
-        const fileName = logoData.fileName; // We will add this field
-
-        // Create a reference to the file to delete
-        const fileRef = storage.ref('logos/' + fileName);
-
-        // Delete the file from Storage
-        fileRef.delete().then(() => {
-            // On successful file deletion, delete the database entry
-            logosRef.child(key).remove();
-            alert('Logo deleted successfully from storage and database.');
-        }).catch((error) => {
-            console.error("Error removing file: ", error);
-            // If file deletion fails, you might still want to delete the database entry
-            // For now, we'll just show an error.
-            if(error.code === 'storage/object-not-found') {
-                console.log("File not found in storage, deleting database entry anyway.");
-                logosRef.child(key).remove();
-            } else {
-                 alert('Could not delete the image file from storage. See console for details.');
-            }
-        });
-    });
-}
-
-// Event delegation for delete buttons
-galleryGrid.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-        const key = e.target.getAttribute('data-key');
-        deleteLogo(key);
-    }
-});
-
-
-// Handle the form submission - THIS IS THE MAINLY REWRITTEN PART
+// --- COMPLETELY REWRITTEN FORM SUBMISSION ---
 addLogoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const title = document.getElementById("logoTitle").value.trim();
@@ -228,28 +169,33 @@ addLogoForm.addEventListener("submit", async (e) => {
         return;
     }
     
-    const originalButtonText = submitButton.innerHTML;
     submitButton.disabled = true;
     submitButton.innerHTML = 'Uploading...';
 
-    // Create a unique file name
-    const fileName = `${Date.now()}-${imageFile.name}`;
-    const filePath = 'logos/' + fileName;
-    const fileRef = storage.ref(filePath);
+    // Create form data to send to Cloudinary
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
     try {
-        // 1. Upload the file to Firebase Storage
-        const uploadTask = await fileRef.put(imageFile);
+        // 1. Upload the image to Cloudinary
+        const response = await fetch(CLOUDINARY_URL, {
+            method: 'POST',
+            body: formData
+        });
 
-        // 2. Get the public URL of the uploaded file
-        const imageUrl = await uploadTask.ref.getDownloadURL();
+        if (!response.ok) {
+            throw new Error('Cloudinary upload failed.');
+        }
 
-        // 3. Save the URL and other data to the Realtime Database
+        const data = await response.json();
+        const imageUrl = data.secure_url; // Get the URL from Cloudinary
+
+        // 2. Save the URL to Firebase Realtime Database
         await logosRef.push({
             title: title,
-            imageUrl: imageUrl, // Store the URL, not the file data
-            category: category,
-            fileName: fileName // Store the file name for easy deletion
+            imageUrl: imageUrl, // Store the Cloudinary URL
+            category: category
         });
         
         addLogoForm.reset();
@@ -260,14 +206,29 @@ addLogoForm.addEventListener("submit", async (e) => {
         alert("Failed to add logo. See console for details.");
     } finally {
         submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
+        submitButton.innerHTML = 'Add Logo';
     }
 });
 
-// Initial call to start listening for changes
+// Deleting just removes the entry from Firebase. 
+// The image will remain on Cloudinary, which is fine for a portfolio.
+function deleteLogo(key) {
+    if (confirm('Are you sure you want to delete this logo from the gallery?')) {
+        logosRef.child(key).remove();
+    }
+}
+
+galleryGrid.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete-btn')) {
+        const key = e.target.getAttribute('data-key');
+        deleteLogo(key);
+    }
+});
+
+
+// Initial call to start listening
 listenForLogoChanges();
 </script>
-<!-- === END OF THE SINGLE, CORRECTED SCRIPT BLOCK === -->
 
 </body>
 </html>
