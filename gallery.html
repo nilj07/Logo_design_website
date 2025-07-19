@@ -193,6 +193,14 @@ function openModal(logoKey) {
     modalCategory.textContent = currentLogo.category;
     couponCodeInput.value = '';
     couponMessage.textContent = '';
+    
+    const watermarkTransformation = "l_LOGOBUCKET_bi96dx,o_60,g_center";
+    const watermarkedImageUrl = currentLogo.imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
+     modalImage.src = watermarkedImageUrl; 
+    modalTitle.textContent = currentLogo.title;
+    modalLogoCode.textContent = `Code: ${currentLogo.logoCode || 'N/A'}`;
+    modalCategory.textContent = currentLogo.category;
+    
     currentDiscount = 0;
     updateBill();
     populateRelatedLogos();
