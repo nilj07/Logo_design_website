@@ -121,7 +121,27 @@ const CLOUDINARY_CLOUD_NAME = "dljgmtij7"; // <-- PASTE YOUR CLOUD NAME
 const CLOUDINARY_UPLOAD_PRESET = "unsigned_logos"; // <-- PASTE YOUR UPLOAD PRESET NAME
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
+// --- pasword
+  // --- PASSWORD PROTECTION ---
+const ADMIN_PASSWORD = "yourpassword123"; // IMPORTANT: Change this to your secure password!
 
+function checkPassword() {
+    const auth = sessionStorage.getItem("admin-auth");
+    if (auth !== ADMIN_PASSWORD) {
+        const entered = prompt("Enter admin password:");
+        if (entered === ADMIN_PASSWORD) {
+            // If correct, save the password to session storage so we don't ask again
+            sessionStorage.setItem("admin-auth", ADMIN_PASSWORD);
+        } else {
+            // If incorrect, show an alert and redirect to the home page
+            alert("Incorrect password!");
+            window.location.href = "index.html";
+        }
+    }
+}
+
+// Run the password check immediately when the page loads
+checkPassword();
 // --- PART 3: APPLICATION LOGIC ---
 
 // Password protection and mobile menu toggle (unchanged)
