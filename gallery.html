@@ -7,68 +7,54 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 body {
-    background-color: #000;
-    color: #fff;
-    font-family: 'Montserrat', sans-serif;
+background-color: #000;
+color: #fff;
+font-family: 'Montserrat', sans-serif;
 }
 .gallery-item {
-    transition: transform 0.2s ease;
+transition: transform 0.2s ease;
 }
 .gallery-item:hover {
-    transform: scale(1.05);
-}
-.category-button {
-    background-color: #4A5568; /* Normal color */
-    color: white;
-}
-.category-button.active {
-    background-color: #2B6CB0; /* Active color */
+transform: scale(1.05);
 }
 </style>
 </head>
 <body class="min-h-screen">
 <!-- Navbar -->
 <nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-bold">
-            <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
-        </a>
-        <div class="hidden md:flex space-x-8">
-            <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
-            <a href="gallery.html" class="hover:text-gray-300 transition-colors font-bold">Gallery</a>
-            <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
-            <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
-            <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
-        </div>
-        <button class="md:hidden text-2xl" id="menu-toggle">
-            <i class="fas fa-bars" id="menu-icon"></i>
-        </button>
-    </div>
-    <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
-        <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
-            <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
-            <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2 font-bold">Gallery</a>
-            <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
-            <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
-            <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
-        </div>
-    </div>
+<div class="container mx-auto flex justify-between items-center">
+<a href="index.html" class="text-2xl font-bold">
+<span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+</a>
+<div class="hidden md:flex space-x-8">
+<a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+<a href="gallery.html" class="hover:text-gray-300 transition-colors font-bold">Gallery</a>
+<a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
+<a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+<a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+</div>
+<button class="md:hidden text-2xl" id="menu-toggle">
+<i class="fas fa-bars" id="menu-icon"></i>
+</button>
+</div>
+<div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
+<div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
+<a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+<a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2 font-bold">Gallery</a>
+<a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
+<a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+<a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+</div>
+</div>
 </nav>
 <main class="pt-24 container mx-auto px-6">
-    <h1 class="text-3xl font-bold mb-6">Logo Gallery</h1>
-    <!-- Category Buttons -->
-    <div class="mb-4 flex space-x-4">
-        <button class="category-button p-2 rounded" data-category="all">All</button>
-        <button class="category-button p-2 rounded" data-category="Personal">Personal</button>
-        <button class="category-button p-2 rounded" data-category="Retail">Retail</button>
-        <button class="category-button p-2 rounded" data-category="Corporate">Corporate</button>
-    </div>
-    <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+<h1 class="text-3xl font-bold mb-6">Logo Gallery</h1>
+<div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
 </main>
 <footer class="bg-black text-white py-6 mt-12">
-    <div class="container mx-auto text-center">
-        <p>© 2023 EliteLogos. All rights reserved.</p>
-    </div>
+<div class="container mx-auto text-center">
+<p>© 2023 EliteLogos. All rights reserved.</p>
+</div>
 </footer>
 <!-- Font Awesome -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -78,22 +64,39 @@ body {
 <script>
 // IMPORTANT: This must be the SAME configuration as in admin.html
 const firebaseConfig = {
-    apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
-    authDomain: "elitelogos-gallery.firebaseapp.com",
-    projectId: "elitelogos-gallery",
-    storageBucket: "elitelogos-gallery.firebasestorage.app",
-    messagingSenderId: "359472953712",
-    appId: "1:359472953712:web:91fc67e1eb30062d90b7b5"
+  apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
+  authDomain: "elitelogos-gallery.firebaseapp.com",
+  projectId: "elitelogos-gallery",
+  storageBucket: "elitelogos-gallery.firebasestorage.app",
+  messagingSenderId: "359472953712",
+  appId: "1:359472953712:web:91fc67e1eb30062d90b7b5"
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const logosRef = database.ref('logos');
+</script>
+
+<script>
+// Mobile menu toggle (no changes here)
+const menuToggle = document.getElementById("menu-toggle");
+const mobileMenu = document.getElementById("mobile-menu");
+const menuIcon = document.getElementById("menu-icon");
+
+if (menuToggle && mobileMenu && menuIcon) {
+    menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        if (mobileMenu.classList.contains("hidden")) {
+            menuIcon.classList.replace("fa-times", "fa-bars");
+        } else {
+            menuIcon.classList.replace("fa-bars", "fa-times");
+        }
+    });
+}
 
 const galleryGrid = document.getElementById("galleryGrid");
-const categoryButtons = document.querySelectorAll(".category-button");
 
-// Load logos from Firebase
-function loadLogosFromFirebase(selectedCategory) {
+// This is the correct version of the function
+function loadLogosFromFirebase() {
     logosRef.on('value', (snapshot) => {
         galleryGrid.innerHTML = "";
         if (!snapshot.exists()) {
@@ -101,51 +104,30 @@ function loadLogosFromFirebase(selectedCategory) {
             return;
         }
 
+        // THIS IS THE LINE THAT WAS LIKELY MISSING
         const logosData = snapshot.val();
 
+        // This loop will now work correctly
         for (const key in logosData) {
             const { title, imageUrl, category } = logosData[key];
-            if (selectedCategory === "all" || category === selectedCategory) {
-                const div = document.createElement("div");
-                div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
-                div.innerHTML = `
-                    <img src="${imageUrl}" alt="${title}" class="w-full aspect-square object-cover" />
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold mb-2">${title}</h3>
-                        <p class="text-gray-300 mb-2">${category}</p>
-                    </div>
-                `;
-                galleryGrid.appendChild(div);
-            }
+            const div = document.createElement("div");
+            div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg";
+            div.innerHTML = `
+                <img src="${imageUrl}" alt="${title}" class="w-full aspect-square object-cover" />
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mb-2">${title}</h3>
+                    <p class="text-gray-300 mb-2">${category}</p>
+                </div>
+            `;
+            galleryGrid.appendChild(div);
         }
     });
 }
 
-// Event listener for category buttons
-categoryButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        // Remove active class from all buttons
-        categoryButtons.forEach(btn => btn.classList.remove("active"));
-        // Add active class to the clicked button
-        button.classList.add("active");
-        // Load logos based on the selected category
-        const selectedCategory = button.getAttribute("data-category");
-        loadLogosFromFirebase(selectedCategory);
-    });
-});
-
-// Start by loading all logos
-loadLogosFromFirebase("all");
-</script>
-    <script>
-// Mobile menu toggle (no changes here)
-const menuToggle = document.getElementById("menu-toggle");
-// ... a bunch of correct code ...
-
 // Start listening for logos as soon as the page loads
 loadLogosFromFirebase();
+    // gallery.html - inside loadLogosFromFirebase() function
 
-    // gallery.html - inside loadLogosFromFirebase() function  <-- DELETE FROM HERE
 // ...
 for (const key in logosData) {
     // CHANGE THIS LINE:
@@ -161,8 +143,7 @@ for (const key in logosData) {
     `;
     galleryGrid.appendChild(div);
 }
-//...                                                     <-- TO HERE
-
+//...
 </script>
 </body>
 </html>
