@@ -8,97 +8,111 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
-        :root {
-            --primary: #000000;
-            --secondary: #222222;
-            --accent: #ffffff;
-            --highlight: #9d9d9d;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
         body {
-            background-color: var(--primary);
-            color: var(--accent);
+            background-color: #000;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Navigation -->
-<!-- Correct Navbar block from gallery.html -->
-<nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-bold">
-            <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
-        </a>
-        <div class="hidden md:flex space-x-8">
-            <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
-            <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
-            <a href="about.html" class="hover:text-gray-300 transition-colors">About</a>
-            <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
-            <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+    
+    <!-- ============================================= -->
+    <!-- THIS IS THE CORRECT, COMPLETE NAVIGATION BAR -->
+    <!-- ============================================= -->
+    <nav class="bg-black bg-opacity-90 text-white py-4 px-6 fixed w-full z-40 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold">
+                <span class="text-white">Elite</span><span class="text-gray-300">Logos</span>
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="hover:text-gray-300 transition-colors">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors font-bold">About</a> <!-- Bold for current page -->
+                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a>
+                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+            </div>
+            <button class="md:hidden text-2xl" id="menu-toggle">
+                <i class="fas fa-bars" id="menu-icon"></i>
+            </button>
         </div>
-        <button class="md:hidden text-2xl" id="menu-toggle">
-            <i class="fas fa-bars" id="menu-icon"></i> <!-- It has the ID -->
-        </button>
-    </div>
-    <!-- This is the missing mobile menu div -->
-    <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
-        <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
-            <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
-            <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
-            <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">About</a>
-            <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
-            <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+        <!-- This is the mobile menu that was missing -->
+        <div class="hidden md:hidden bg-black bg-opacity-90 absolute w-full left-0 top-16 px-6 pb-4" id="mobile-menu">
+            <div class="flex flex-col space-y-4 mt-4" id="mobile-nav-items">
+                <a href="index.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Home</a>
+                <a href="gallery.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2">Gallery</a>
+                <a href="about.html" class="hover:text-gray-300 transition-colors border-b border-gray-800 pb-2 font-bold">About</a> <!-- Bold for current page -->
+                <a href="contact.html" class="hover:text-gray-300 transition-colors pb-2">Contact</a>
+                <a href="admin.html" class="hover:text-gray-300 transition-colors">Admin</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
     <!-- About Section -->
-    <section class="py-20 bg-gray-900">
+    <!-- The main content starts lower down to account for the fixed navbar -->
+    <section class="pt-24 pb-20 bg-gray-900">
         <div class="container mx-auto px-6">
-            <h1 class="text-3xl font-bold mb-6">About EliteLogos</h1>
-            <p class="mb-4">We are a premium logo design studio dedicated to crafting unique brand identities. Our team of experienced designers works closely with clients to create logos that resonate with their target audience.</p>
-            <p class="mb-4">Founded in 2015, we have helped numerous businesses and individuals establish their brand presence through effective design.</p>
-            <h2 class="text-2xl font-bold mb-4">Our Mission</h2>
-            <p class="mb-4">To provide high-quality, custom logo designs that reflect the essence of our clients' brands.</p>
-            <h2 class="text-2xl font-bold mb-4">Our Values</h2>
-            <ul class="list-disc list-inside mb-4">
-                <li>Creativity</li>
-                <li>Collaboration</li>
-                <li>Integrity</li>
-                <li>Excellence</li>
-            </ul>
+            <h1 class="text-4xl font-bold mb-8">About EliteLogos</h1>
+            <div class="max-w-3xl">
+                <p class="mb-6 text-lg text-gray-300">We are a premium logo design studio dedicated to crafting unique brand identities. Our team of experienced designers works closely with clients to create logos that resonate with their target audience and drive business success.</p>
+                <p class="mb-6 text-lg text-gray-300">Founded in 2015, we have helped hundreds of businesses and individuals—from innovative startups to established enterprises—establish a powerful and memorable brand presence through effective, beautiful design.</p>
+                
+                <div class="mt-12">
+                    <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
+                    <p class="mb-8 text-lg text-gray-300">To provide high-quality, custom logo designs that reflect the essence of our clients' brands, empowering them to stand out in a crowded marketplace.</p>
+                </div>
+
+                <div class="mt-12">
+                    <h2 class="text-3xl font-bold mb-4">Our Core Values</h2>
+                    <ul class="list-none space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-400 mt-1 mr-4"></i>
+                            <span class="text-lg text-gray-300"><strong class="text-white">Creativity:</strong> We push boundaries to deliver original and impactful designs.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-handshake text-yellow-400 mt-1 mr-4"></i>
+                            <span class="text-lg text-gray-300"><strong class="text-white">Collaboration:</strong> Your vision is our guide. We work together every step of the way.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-yellow-400 mt-1 mr-4"></i>
+                            <span class="text-lg text-gray-300"><strong class="text-white">Integrity:</strong> We believe in honest communication and transparent processes.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-star text-yellow-400 mt-1 mr-4"></i>
+                            <span class="text-lg text-gray-300"><strong class="text-white">Excellence:</strong> We are committed to the highest standards of quality in every logo we create.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
     <footer class="bg-black text-white py-6">
         <div class="container mx-auto text-center">
-            <p>&copy; 2023 EliteLogos. All rights reserved.</p>
+            <p>© 2023 EliteLogos. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <!-- =================================================== -->
-<!-- PASTE THIS ENTIRE BLOCK ON ALL YOUR OTHER HTML PAGES -->
-<!-- =================================================== -->
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT FOR THE MENU - PLACED AT THE BOTTOM FOR SPEED -->
+    <!-- ========================================================= -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuIcon = document.getElementById("menu-icon");
 
-<!-- Font Awesome for the menu icons -->
-
-    <!-- This should be at the bottom of index.html and about.html -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-<script>
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuIcon = document.getElementById("menu-icon");
-
-    if (menuToggle && mobileMenu && menuIcon) {
-        // ... the rest of the script ...
-    }
-</script>
+        if (menuToggle && mobileMenu && menuIcon) {
+            menuToggle.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+                if (mobileMenu.classList.contains("hidden")) {
+                    menuIcon.classList.replace("fa-times", "fa-bars");
+                } else {
+                    menuIcon.classList.replace("fa-bars", "fa-times");
+                }
+            });
+        }
+    </script>
 </body>
 </html>
