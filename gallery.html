@@ -54,6 +54,58 @@ body {
         </div>
     </div>
 </nav>
+    <!-- ========================================================= -->
+<!-- PASTE THIS ENTIRE MODAL BLOCK AFTER THE <nav> TAG -->
+<!-- ========================================================= -->
+<div id="logoModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div id="modalContent" class="bg-gray-900 w-full max-w-4xl rounded-lg shadow-xl relative transform transition-all scale-95 opacity-0">
+        <!-- Close Button -->
+        <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">×</button>
+
+        <!-- Main Modal Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+            <!-- Left Side: Image -->
+            <div id="modalImageContainer" class="flex items-center justify-center bg-white rounded-lg p-4">
+                <img id="modalImage" src="" alt="" class="max-w-full max-h-96 object-contain">
+            </div>
+
+            <!-- Right Side: Details -->
+            <div class="flex flex-col">
+                <h2 id="modalTitle" class="text-3xl font-bold mb-2"></h2>
+                <p id="modalLogoCode" class="text-gray-400 mb-4"></p>
+                <p id="modalCategory" class="text-sm uppercase tracking-widest text-yellow-400 mb-6"></p>
+
+                <!-- Coupon Section -->
+                <div class="flex items-center space-x-2 mb-6">
+                    <input type="text" id="couponCodeInput" placeholder="Enter Coupon Code" class="flex-grow p-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <button id="applyCouponBtn" class="bg-gray-600 text-white font-semibold py-2 px-4 rounded hover:bg-gray-500">Apply</button>
+                </div>
+                <p id="couponMessage" class="text-sm h-5 mb-4"></p> <!-- For success/error messages -->
+
+                <!-- Bill Section -->
+                <div class="bg-gray-800 p-4 rounded-lg space-y-2 text-lg">
+                    <div class="flex justify-between"><span>Price:</span> <span id="billPrice"></span></div>
+                    <div class="flex justify-between text-green-400"><span>Discount:</span> <span id="billDiscount">-$0</span></div>
+                    <hr class="border-gray-600">
+                    <div class="flex justify-between font-bold text-xl"><span>Total:</span> <span id="billTotal"></span></div>
+                </div>
+
+                <!-- Shop Now Button -->
+                <div class="mt-auto pt-6">
+                    <button id="modalShopNowBtn" class="w-full bg-yellow-400 text-black font-bold text-lg py-3 px-4 rounded hover:bg-yellow-500 transition-colors">Shop Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Logos Section -->
+        <div class="border-t border-gray-700 p-8">
+            <h3 class="text-2xl font-bold mb-4">Related Logos</h3>
+            <div id="relatedLogosGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <!-- Related logos will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
 <main class="pt-24 container mx-auto px-6">
     <h1 class="text-3xl font-bold mb-6">Logo Gallery</h1>
     <!-- Category Buttons -->
@@ -77,7 +129,11 @@ body {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-// IMPORTANT: This must be the SAME configuration as in admin.html
+// =========================================================
+// PASTE THIS AS THE ENTIRE SCRIPT FOR gallery.html
+// =========================================================
+
+// --- SECTION 1: CONFIGURATION AND SETUP ---
 const firebaseConfig = {
     apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
     authDomain: "elitelogos-gallery.firebaseapp.com",
@@ -90,118 +146,221 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const logosRef = database.ref('logos');
 
-const galleryGrid = document.getElementById("galleryGrid");
-const categoryButtons = document.querySelectorAll(".category-button");
-
-// Load logos from Firebase
-// This is the new, corrected function for loading and watermarking logos
-function loadLogosFromFirebase(selectedCategory) {
-    logosRef.on('value', (snapshot) => {
-        galleryGrid.innerHTML = "";
-        if (!snapshot.exists()) {
-            galleryGrid.innerHTML = '<p class="text-gray-400 col-span-full">The gallery is currently empty.</p>';
-            return;
-        }
-
-        const logosData = snapshot.val();
-        let logosFound = false;
-
-        for (const key in logosData) {
-            const { title, imageUrl, category, price = 'Price on request' } = logosData[key];
-
-            if (selectedCategory === "all" || category === selectedCategory) {
-                logosFound = true;
-
-                // 1. Define the watermark transformation using your Public ID
-                const watermarkTransformation = "l_LOGOBUCKET_bi96dx,o_60,g_center";
-
-                // 2. Create the new watermarked URL
-                const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
-
-                // 3. Create the div and its HTML content
-                const div = document.createElement("div");
-                div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg flex flex-col";
-                
-                // 4. Use the NEW watermarked URL for the image and button
-                div.innerHTML = `
-                    <img src="${watermarkedImageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />
-                    <div class="p-4 flex-grow flex flex-col">
-                        <h3 class="text-xl font-bold mb-2">${title}</h3>
-                        <p class="text-gray-300 mb-2">${category}</p>
-                        <p class="text-lg font-semibold text-yellow-400 mb-4">Price: ${price}/-</p>
-                        <div class="mt-auto">
-                            <button class="shop-now-btn w-full bg-yellow-400 text-black font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors"
-                                    data-title="${title}"
-                                    data-price="${price}"
-                                    data-image-url="${watermarkedImageUrl}">
-                                Shop Now
-                            </button>
-                        </div>
-                    </div>
-                `;
-                galleryGrid.appendChild(div);
-            }
-        }
-
-        if (!logosFound && selectedCategory !== "all") {
-            galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in the '${selectedCategory}' category.</p>`;
-        }
-    });
-}
-// --- WhatsApp Button Logic ---
-galleryGrid.addEventListener('click', function(e) {
-    // Check if a "Shop Now" button was clicked
-    if (e.target.classList.contains('shop-now-btn')) {
-        const button = e.target;
-        const title = button.dataset.title;
-        const price = button.dataset.price;
-        const imageUrl = button.dataset.imageUrl;
-        
-        // Your WhatsApp number
-        const whatsappNumber = "919730094145"; 
-
-        // Create the message
-        const message = `Hi! I'm interested in buying this logo:\n\n*Logo Name:* ${title}\n*Price:* ${price}\n\nHere is the image for reference:\n${imageUrl}`;
-
-        // Encode the message for a URL
-        const encodedMessage = encodeURIComponent(message);
-
-        // Create the WhatsApp link and open it in a new tab
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-        window.open(whatsappUrl, '_blank');
-    }
-});
-
-
-// Event listener for category buttons
-categoryButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        // Remove active class from all buttons
-        categoryButtons.forEach(btn => btn.classList.remove("active"));
-        // Add active class to the clicked button
-        button.classList.add("active");
-        // Load logos based on the selected category
-        const selectedCategory = button.getAttribute("data-category");
-        loadLogosFromFirebase(selectedCategory);
-    });
-});
-
-// Start by loading all logos
-loadLogosFromFirebase("all");
-// --- Mobile Menu Toggle ---
+// --- Get all page elements ---
 const menuToggle = document.getElementById("menu-toggle");
 const mobileMenu = document.getElementById("mobile-menu");
 const menuIcon = document.getElementById("menu-icon");
+const galleryGrid = document.getElementById("galleryGrid");
+const categoryButtons = document.querySelectorAll(".category-button");
 
-if (menuToggle && mobileMenu && menuIcon) {
-    menuToggle.addEventListener("click", () => {
+// --- Get all MODAL elements ---
+const logoModal = document.getElementById('logoModal');
+const modalContent = document.getElementById('modalContent');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const modalImage = document.getElementById('modalImage');
+const modalTitle = document.getElementById('modalTitle');
+const modalLogoCode = document.getElementById('modalLogoCode');
+const modalCategory = document.getElementById('modalCategory');
+const couponCodeInput = document.getElementById('couponCodeInput');
+const applyCouponBtn = document.getElementById('applyCouponBtn');
+const couponMessage = document.getElementById('couponMessage');
+const billPrice = document.getElementById('billPrice');
+const billDiscount = document.getElementById('billDiscount');
+const billTotal = document.getElementById('billTotal');
+const modalShopNowBtn = document.getElementById('modalShopNowBtn');
+const relatedLogosGrid = document.getElementById('relatedLogosGrid');
+
+let allLogosData = {}; // Store all logos to avoid re-fetching
+let currentLogo = {}; // Store details of the currently viewed logo
+let currentDiscount = 0; // Store the current discount amount
+
+// --- DUMMY COUPON CODES ---
+const COUPONS = {
+    "SAVE10": 10,  // 10% discount
+    "ELITE20": 20, // 20% discount
+};
+
+
+// --- SECTION 2: FUNCTIONS ---
+
+// Mobile Menu Logic
+function toggleMobileMenu() {
+    if (menuToggle && mobileMenu && menuIcon) {
         mobileMenu.classList.toggle("hidden");
         if (mobileMenu.classList.contains("hidden")) {
             menuIcon.classList.replace("fa-times", "fa-bars");
         } else {
             menuIcon.classList.replace("fa-bars", "fa-times");
         }
+    }
+}
+
+// Function to open the modal
+function openModal(logoKey, logos) {
+    currentLogo = { key: logoKey, ...logos[logoKey] };
+    allLogosData = logos; // Save the full list of logos
+    
+    // Populate modal with data
+    modalImage.src = currentLogo.imageUrl;
+    modalTitle.textContent = currentLogo.title;
+    modalLogoCode.textContent = `Code: ${currentLogo.logoCode || 'N/A'}`;
+    modalCategory.textContent = currentLogo.category;
+
+    // Reset coupon and bill
+    couponCodeInput.value = '';
+    couponMessage.textContent = '';
+    currentDiscount = 0;
+    updateBill();
+
+    // Show related logos
+    populateRelatedLogos();
+    
+    // Show the modal with animation
+    logoModal.classList.remove('hidden');
+    logoModal.classList.add('flex');
+    setTimeout(() => {
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+    }, 50); // Small delay to allow CSS transition
+}
+
+// Function to close the modal
+function closeModal() {
+    modalContent.classList.add('scale-95', 'opacity-0');
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    setTimeout(() => {
+        logoModal.classList.add('hidden');
+        logoModal.classList.remove('flex');
+    }, 200); // Match transition duration
+}
+
+// Function to update the bill details
+function updateBill() {
+    const priceString = currentLogo.price.replace(/[^0-9.]/g, '');
+    const price = parseFloat(priceString);
+    if (isNaN(price)) return;
+    
+    const discountAmount = price * (currentDiscount / 100);
+    const finalPrice = price - discountAmount;
+    
+    billPrice.textContent = currentLogo.price;
+    billDiscount.textContent = `-₹${discountAmount.toFixed(0)}`;
+    billTotal.textContent = `₹${finalPrice.toFixed(0)}`;
+}
+
+// Function to handle coupon application
+function applyCoupon() {
+    const code = couponCodeInput.value.trim().toUpperCase();
+    if (COUPONS[code]) {
+        currentDiscount = COUPONS[code];
+        couponMessage.textContent = `${COUPONS[code]}% discount applied!`;
+        couponMessage.classList.add('text-green-400');
+        couponMessage.classList.remove('text-red-400');
+    } else {
+        currentDiscount = 0;
+        couponMessage.textContent = 'Invalid coupon code.';
+        couponMessage.classList.add('text-red-400');
+        couponMessage.classList.remove('text-green-400');
+    }
+    updateBill();
+}
+
+// Populate the related logos grid
+function populateRelatedLogos() {
+    relatedLogosGrid.innerHTML = '';
+    let count = 0;
+    for (const key in allLogosData) {
+        if (count >= 4) break; // Show max 4 related logos
+        const logo = allLogosData[key];
+        // Show logos from the same category, but not the current logo itself
+        if (logo.category === currentLogo.category && key !== currentLogo.key) {
+            const div = document.createElement("div");
+            div.className = "gallery-item cursor-pointer";
+            div.setAttribute('data-logo-key', key);
+            div.innerHTML = `<img src="${logo.imageUrl}" class="w-full aspect-square object-contain bg-white rounded-md">`;
+            relatedLogosGrid.appendChild(div);
+            count++;
+        }
+    }
+}
+
+// Main function to render the gallery grid
+function renderGallery(logos, selectedCategory) {
+    galleryGrid.innerHTML = "";
+    let logosFound = false;
+    for (const key in logos) {
+        if (selectedCategory === "all" || logos[key].category === selectedCategory) {
+            logosFound = true;
+            const { title, imageUrl } = logos[key];
+            const div = document.createElement("div");
+            div.className = "gallery-item bg-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer";
+            div.setAttribute('data-logo-key', key); // Add key for identification
+            div.innerHTML = `<img src="${imageUrl}" alt="${title}" class="w-full aspect-square object-contain bg-white" />`;
+            galleryGrid.appendChild(div);
+        }
+    }
+    if (!logosFound && selectedCategory !== "all") {
+        galleryGrid.innerHTML = `<p class="text-gray-400 col-span-full">No logos found in this category.</p>`;
+    }
+}
+
+
+// --- SECTION 3: EVENT LISTENERS & INITIALIZATION ---
+
+// Listen for all logo data from Firebase ONCE
+logosRef.on('value', (snapshot) => {
+    if (!snapshot.exists()) {
+        galleryGrid.innerHTML = '<p class="text-gray-400 col-span-full">The gallery is currently empty.</p>';
+        return;
+    }
+    allLogosData = snapshot.val(); // Store all logos
+    renderGallery(allLogosData, "all"); // Initial render
+});
+
+// Listener for category buttons
+categoryButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        categoryButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        const selectedCategory = button.getAttribute("data-category");
+        renderGallery(allLogosData, selectedCategory); // Re-render with filter
     });
+});
+
+// Listener for clicks on the main gallery grid (to open modal)
+galleryGrid.addEventListener('click', function(e) {
+    const card = e.target.closest('.gallery-item');
+    if (card) {
+        const logoKey = card.dataset.logoKey;
+        openModal(logoKey, allLogosData);
+    }
+});
+
+// Listener for clicks on the related logos grid
+relatedLogosGrid.addEventListener('click', function(e) {
+    const card = e.target.closest('.gallery-item');
+    if (card) {
+        const logoKey = card.dataset.logoKey;
+        openModal(logoKey, allLogosData); // Re-open the modal with the new logo
+    }
+});
+
+// Listeners for modal controls
+menuToggle.addEventListener('click', toggleMobileMenu);
+closeModalBtn.addEventListener('click', closeModal);
+applyCouponBtn.addEventListener('click', applyCoupon);
+modalShopNowBtn.addEventListener('click', () => {
+    const whatsappNumber = "919730094145";
+    const message = `I'm interested in this logo:\n\n*Name:* ${modalTitle.textContent}\n*Code:* ${modalLogoCode.textContent.replace('Code: ','')}\n\n--- BILL ---\n*Price:* ${billPrice.textContent}\n*Discount:* ${billDiscount.textContent}\n*Total:* ${billTotal.textContent}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+});
+
+// Initial Page Load
+const allButton = document.querySelector('.category-button[data-category="all"]');
+if (allButton) {
+    allButton.classList.add('active');
 }
 </script>
 </body>
