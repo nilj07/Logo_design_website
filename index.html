@@ -100,25 +100,6 @@
         }
     </style>
     <!-- Font Awesome for the menu icons -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
-<!-- JavaScript for the Mobile Menu Toggle -->
-<script>
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuIcon = document.getElementById("menu-icon");
-
-    if (menuToggle && mobileMenu && menuIcon) {
-        menuToggle.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-            if (mobileMenu.classList.contains("hidden")) {
-                menuIcon.classList.replace("fa-times", "fa-bars");
-            } else {
-                menuIcon.classList.replace("fa-bars", "fa-times");
-            }
-        });
-    }
-</script>
 </head>
     <!-- =================================================== -->
 <!-- PASTE THIS ENTIRE BLOCK ON ALL YOUR OTHER HTML PAGES -->
@@ -366,3 +347,31 @@
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Ready to Start Your Project?</h2>
                 <p class="text-gray-400 mb-8">Contact us today to discuss your logo design needs and get a quote.</p>
                 <a href="contact.html" class="cta-button bg-white text-black px-8 py-3 rounded font-medium transition-colors hover:bg-gray-200">
+
+</body>
+<!-- =================================================== -->
+<!-- PASTE THIS ENTIRE BLOCK ON ALL YOUR OTHER HTML PAGES -->
+<!-- =================================================== -->
+
+<!-- Font Awesome for the menu icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+<!-- JavaScript for the Mobile Menu Toggle -->
+<script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+
+    if (menuToggle && mobileMenu && menuIcon) {
+        menuToggle.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+            if (mobileMenu.classList.contains("hidden")) {
+                menuIcon.classList.replace("fa-times", "fa-bars");
+            } else {
+                menuIcon.classList.replace("fa-bars", "fa-times");
+            }
+        });
+    }
+</script>
+</html>
+
