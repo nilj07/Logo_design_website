@@ -66,13 +66,13 @@ transform: scale(1.05);
 <script>
 // IMPORTANT: This must be the SAME configuration as in admin.html
 const firebaseConfig = {
-    apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
-    authDomain: "elitelogos-gallery.firebaseapp.com",
-    projectId: "elitelogos-gallery",
-    storageBucket: "elitelogos-gallery.firebasestorage.app",
-    messagingSenderId: "359472953712",
-    appId: "1:359472953712:web:91fc67e1eb30062d90b7b5"
-  };
+  apiKey: "AIzaSyAFLAxss6pIe5I6qIBHKkuPqA39a2QbF5Y",
+  authDomain: "elitelogos-gallery.firebaseapp.com",
+  projectId: "elitelogos-gallery",
+  storageBucket: "elitelogos-gallery.firebasestorage.app",
+  messagingSenderId: "359472953712",
+  appId: "1:359472953712:web:91fc67e1eb30062d90b7b5"
+};
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const logosRef = database.ref('logos');
