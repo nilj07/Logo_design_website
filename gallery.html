@@ -256,15 +256,14 @@ function renderGallery(logosToRender, selectedCategory) {
     galleryGrid.innerHTML = "";
     let logosFound = false;
     for (const key in logosToRender) {
+        // THE FIX IS HERE: We correctly use "logosToRender[key]"
         const logo = logosToRender[key];
         
-        // --- SAFETY CHECK ---
-        // Only proceed if the logo object exists and has a valid imageUrl property
+        // This is the safety check to prevent bad data from breaking the page
         if (logo && logo.imageUrl && (selectedCategory === "all" || logo.category === selectedCategory)) {
             logosFound = true;
             const { title, imageUrl, category, price = 'N/A' } = logo;
             
-            // --- Watermark Logic ---
             const watermarkTransformation = "l_LOGOBUCKET_tdk1fj,o_60,g_center";
             const watermarkedImageUrl = imageUrl.replace("/upload/", `/upload/${watermarkTransformation}/`);
             
@@ -279,7 +278,7 @@ function renderGallery(logosToRender, selectedCategory) {
                 <div class="p-4 flex-grow flex flex-col">
                     <h3 class="text-xl font-bold mb-2">${title}</h3>
                     <p class="text-sm text-gray-400 mb-2">${category}</p>
-                    <p class="text-lg font-semibold text-yellow-400 mb-4">price:${price}/-</p>
+                    <p class="text-lg font-semibold text-yellow-400 mb-4">${price}</p>
                     <div class="mt-auto pt-2">
                         <div class="shop-now-trigger w-full bg-yellow-400 text-black text-center font-bold py-2 px-4 rounded hover:bg-yellow-500 transition-colors">
                             Shop Now
